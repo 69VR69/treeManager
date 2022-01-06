@@ -18,6 +18,7 @@ public class Tree
         private int id;
         private String adr;
         private String arrondissement;
+        private String complement;
         private String domaine;
 
 

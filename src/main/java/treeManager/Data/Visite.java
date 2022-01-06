@@ -6,6 +6,7 @@ public class Visite
     {
         private Date date;
         private String rapport;
+        private int id_member;
 
         public Visite(Date date, String rapport) {
             this.date = date;

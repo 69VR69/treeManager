@@ -9,6 +9,7 @@ public class Association
         int solde;
         private ArrayList<Member> members;
         private ArrayList<Tree> trees;
+        int nb_max_visite;
 
 
         //generateRapport() rapport financier

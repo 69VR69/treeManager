@@ -6,43 +6,44 @@ import java.util.ArrayList;
 
 public class Tree
     {
-        private int nb_votes;
-        private boolean remarkable;
+        private int id;
+        private String nomfr;
         private String age;
         private int hauteur;
-        private int epeisseur;
-        private String nomfr;
-        private  String genre;
+        private int epaisseur;
         private String espece;
+        private  String genre;
+        private boolean remarquable;
         private int emplacement;
-        private int id;
-        private String adr;
-        private String arrondissement;
-        private String complement;
+        private int nb_votes;
         private String domaine;
-
-
-        private ArrayList<Visite> visites;
+        private String arrondissement;
+        private String adresse;
+        private String complement;
+        
+        private ArrayList<Visite> visites; //TODO : in bd link it as relational BD
         //array de rapports de visite "comtpe rendu"
-
-        public Tree(int nb_votes, boolean remarkable, String age, int hauteur, int epeisseur, String nomfr, String genre, String espece, int emplacement, int id, String adr, String arrondissement, String domaine, ArrayList<Visite> visites) {
-            this.nb_votes = nb_votes;
-            this.remarkable = remarkable;
-            this.age = age;
-            this.hauteur = hauteur;
-            this.epeisseur = epeisseur;
-            this.nomfr = nomfr;
-            this.genre = genre;
-            this.espece = espece;
-            this.emplacement = emplacement;
-            this.id = id;
-            this.adr = adr;
-            this.arrondissement = arrondissement;
-            this.domaine = domaine;
-            this.visites = visites;
-        }
-
-
+    
+    
+        public Tree(int id, String nomfr, String age, int hauteur, int epaisseur, String espece, String genre, boolean remarquable, int emplacement, int nb_votes, String domaine, String arrondissement, String adresse, String complement, ArrayList<Visite> visites)
+            {
+                this.id = id;
+                this.nomfr = nomfr;
+                this.age = age;
+                this.hauteur = hauteur;
+                this.epaisseur = epaisseur;
+                this.espece = espece;
+                this.genre = genre;
+                this.remarquable = remarquable;
+                this.emplacement = emplacement;
+                this.nb_votes = nb_votes;
+                this.domaine = domaine;
+                this.arrondissement = arrondissement;
+                this.adresse = adresse;
+                this.complement = complement;
+                this.visites = visites;
+            }
+    
         public int getNb_votes() {
             return nb_votes;
         }
@@ -51,12 +52,12 @@ public class Tree
             this.nb_votes = nb_votes;
         }
 
-        public boolean isRemarkable() {
-            return remarkable;
+        public boolean isRemarquable() {
+            return remarquable;
         }
 
-        public void setRemarkable(boolean remarkable) {
-            this.remarkable = remarkable;
+        public void setRemarquable(boolean remarquable) {
+            this.remarquable = remarquable;
         }
 
         public String getAge() {
@@ -75,12 +76,12 @@ public class Tree
             this.hauteur = hauteur;
         }
 
-        public int getEpeisseur() {
-            return epeisseur;
+        public int getEpaisseur() {
+            return epaisseur;
         }
 
-        public void setEpeisseur(int epeisseur) {
-            this.epeisseur = epeisseur;
+        public void setEpaisseur(int epaisseur) {
+            this.epaisseur = epaisseur;
         }
 
         public String getNomfr() {
@@ -123,12 +124,12 @@ public class Tree
             this.id = id;
         }
 
-        public String getAdr() {
-            return adr;
+        public String getAdresse() {
+            return adresse;
         }
 
-        public void setAdr(String adr) {
-            this.adr = adr;
+        public void setAdresse(String adresse) {
+            this.adresse = adresse;
         }
 
         public String getArrondissement() {
@@ -159,15 +160,15 @@ public class Tree
         @Override
         public String toString() {
             return "Tree{" +
-                    "remarkable=" + remarkable +
+                    "remarquable=" + remarquable +
                     ", age='" + age + '\'' +
                     ", hauteur (m)=" + hauteur +
-                    ", epeisseur (cm)=" + epeisseur +
+                    ", epaisseur (cm)=" + epaisseur +
                     ", nom francais='" + nomfr + '\'' +
                     ", genre='" + genre + '\'' +
                     ", espece='" + espece + '\'' +
                     ", emplacement=" + emplacement +
-                    ", adresse='" + adr + '\'' +
+                    ", adresse='" + adresse + '\'' +
                     ", arrondissement='" + arrondissement + '\'' +
                     ", domaine='" + domaine + '\'' +
                     '}';

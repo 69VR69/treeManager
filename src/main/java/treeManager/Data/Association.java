@@ -65,11 +65,11 @@ public class Association
         //créer visite
         public void ask_visite(Tree t, Member member, Date date){ //demende de visite (check si arbre dispo dans +add si oui
             //TODO check if money else warn currently have not enougn money
-            if (member.get_nb_visite()<nb_max_visite){//check if not
+            if (member.getNbVisites()<nb_max_visite){//check if not
                 Visite v= new Visite(member,date);
                 //TODO add check not multiple visit on the same day
                 t.add_visite(v);
-                member.inc_visite();
+                member.incVisites();
             }
             else {
                 //TODO warn user : member cant do visit and visit not creeated
@@ -84,6 +84,12 @@ public class Association
         public void ask_visite(Tree t, Member member ){
             Date date = new Date(); // This object contains the current date value
             ask_visite(t,member,date);
+        }
+
+        public void desinscrire(Member m) {
+            // TODO désinscrire un membre en le supprimant des 'members' (lister les membres puis supprimer en inputant un ID maybe?)
+            // cf. leftover fonction de President
+            System.out.println("Not done yet!");
         }
 
 

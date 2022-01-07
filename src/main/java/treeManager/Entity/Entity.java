@@ -4,8 +4,11 @@ import java.io.*; // pour la fonction lireClavier
 
 public interface Entity
     {
+        /**
+         * Utility - Reads keyboard input
+         * @return Entered text
+         */
         static public String lireClavier() {
-            //TODO how the fuck do you make this function visible aux autres-
             try {
                 BufferedReader clavier = new BufferedReader(new InputStreamReader(System.in));
                 return clavier.readLine();

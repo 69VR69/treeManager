@@ -11,10 +11,11 @@ public class Visite
         private String rapport;
         private Member member;
 
-        public Visite(int id, Date date, String rapport) {
+        Visite(int id, Member member,Date date) {
             this.id = id;
             this.date = date;
-            this.rapport = rapport;
+            this.rapport = "";
+            this.member = member;
         }
 
         public Visite(){

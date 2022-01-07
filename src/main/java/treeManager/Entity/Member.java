@@ -38,26 +38,6 @@ public class Member implements Entity
             {
                 this.proposedTrees = proposedTrees;
             }
-        
-        public String getNom() {
-            return nom;
-        }
-
-        public void setNom(String nom) {
-            this.nom = nom;
-        }
-
-        public boolean hasPayed() {
-            return hasPayed;
-        }
-
-        public ArrayList<Tree> getProposedTrees() {
-            return proposedTrees;
-        }
-
-        public void setProposedTrees(ArrayList<Tree> proposedTrees) {
-            this.proposedTrees = proposedTrees;
-        }
 
         // --- Fonctions membres ---
         public void payCotisation()

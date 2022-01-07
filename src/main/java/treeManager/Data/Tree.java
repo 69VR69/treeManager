@@ -178,7 +178,7 @@ public class Tree
             visites = new ArrayList<Visite>();
         }
 
-        public void visite(Visite v){
+        public void add_visite(Visite v){
             visites.add(v);
         }
 

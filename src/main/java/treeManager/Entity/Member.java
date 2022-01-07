@@ -10,7 +10,7 @@ public class Member implements Entity
         private String nom;
         private boolean hasPayed;
         private ArrayList<Tree> proposedTrees;
-        
+
         // --- Getters & Setters ---
         public String getNom() {
             return nom;
@@ -31,7 +31,7 @@ public class Member implements Entity
         public void setProposedTrees(ArrayList<Tree> proposedTrees) {
             this.proposedTrees = proposedTrees;
         }
-        
+
         // --- Fonctions membres ---
         public void payCotisation() {
             //payer cotisation
@@ -54,7 +54,7 @@ public class Member implements Entity
             System.out.println("Enter a tree to propose: ");
             Tree t = Entity.lireClavier(); // TODO clarifier le choix de l'Arbre à ajouter (recherche par attribut ? tout lister et choix par id ?)
 
-            /* TODO 
+            /* TODO
             Si on atteint les 5, proposer d'en remplacer un par le 6ème choisi
             Si on quitte avant, probablement rentrer -1 ou un truc du genre
             */
@@ -71,7 +71,19 @@ public class Member implements Entity
                 }
             }
         }
-        
+
+
+        //TODO add attribute nb_visits
+
+        public int get_nb_visite(){
+            //TODO retunr attribute
+            return 0;
+        }
+
+        public void  inc_visite(){
+            //TODO increments by one the number of visits
+        }
+
         // --- Constructeurs ---
         public Member(String nom) {
             this.hasPayed = false;

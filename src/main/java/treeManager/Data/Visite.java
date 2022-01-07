@@ -1,19 +1,22 @@
 package treeManager.Data;
 
+import treeManager.Entity.Member;
+
 import java.util.Date;
 
 public class Visite
     {
         private Date date;
         private String rapport;
-        private int id_member;
+        private Member member;
 
-        public Visite(Date date, String rapport) {
+        Visite(Member member,Date date) {
             this.date = date;
-            this.rapport = rapport;
+            this.rapport = "";
+            this.member = member;
         }
 
-        public Visite(){
+        Visite(){
 
         }
 

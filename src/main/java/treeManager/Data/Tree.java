@@ -14,7 +14,7 @@ public class Tree
         private String espece;
         private  String genre;
         private boolean remarquable;
-        private int emplacement;
+        private String emplacement;
         private int nb_votes;
         private String domaine;
         private String arrondissement;
@@ -25,7 +25,7 @@ public class Tree
         //array de rapports de visite "comtpe rendu"
     
     
-        public Tree(int id, String nomfr, String age, int hauteur, int epaisseur, String espece, String genre, boolean remarquable, int emplacement, int nb_votes, String domaine, String arrondissement, String adresse, String complement, ArrayList<Visite> visites)
+        public Tree(int id, String nomfr, String age, int hauteur, int epaisseur, String espece, String genre, boolean remarquable, String emplacement, int nb_votes, String domaine, String arrondissement, String adresse, String complement, ArrayList<Visite> visites)
             {
                 this.id = id;
                 this.nomfr = nomfr;
@@ -108,11 +108,11 @@ public class Tree
             this.espece = espece;
         }
 
-        public int getEmplacement() {
+        public String getEmplacement() {
             return emplacement;
         }
 
-        public void setEmplacement(int emplacement) {
+        public void setEmplacement(String emplacement) {
             this.emplacement = emplacement;
         }
 
@@ -147,8 +147,17 @@ public class Tree
         public void setDomaine(String domaine) {
             this.domaine = domaine;
         }
-
-
+    
+        public String getComplement()
+            {
+                return complement;
+            }
+    
+        public void setComplement(String complement)
+            {
+                this.complement = complement;
+            }
+    
         public ArrayList<Visite> getVisites() {
             return visites;
         }
@@ -171,7 +180,7 @@ public class Tree
                     ", adresse='" + adresse + '\'' +
                     ", arrondissement='" + arrondissement + '\'' +
                     ", domaine='" + domaine + '\'' +
-                    '}';
+                    "}\n";
         }
 
 

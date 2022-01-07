@@ -2,11 +2,9 @@ package treeManager;
 
 import treeManager.Data.Tree;
 import treeManager.Data.Visite;
+import treeManager.Entity.Member;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.*;
 import java.util.ArrayList;
 
 public class DatabaseTools
@@ -37,9 +35,37 @@ public class DatabaseTools
                     }
             }
         
-        /*
-            TREE
-         */
+        /* TREE */
+        public ArrayList<Tree> getAllTree()
+            {
+                ArrayList<Tree> treeList = new ArrayList<>();
+                try
+                    {
+                        PreparedStatement ps = connection.prepareStatement(SQLREQUEST.selectAllTree);
+                        ResultSet rs = ps.executeQuery();
+                        while (rs.next())
+                            {
+                                PreparedStatement ps2 = connection.prepareStatement(SQLREQUEST.selectVisiteForTree);
+                                ps2.setInt(1, rs.getInt("idPrimaire"));
+                                ResultSet rs2 = ps2.executeQuery();
+                                ArrayList<Visite> visiteList = new ArrayList<>();
+                                while (rs2.next())
+                                    {
+                                        Member member = new Member("test"); // TODO get member
+                                        visiteList.add(new Visite(rs2.getInt("id") ,rs2.getDate("date"),rs2.getString("rapport"),member));
+                                    }
+                                
+                                treeList.add(new Tree(rs.getInt("idPrimaire"), rs.getString("name_fr"), rs.getString("age"), rs.getInt("height"), rs.getInt("thickness"), rs.getString("species"), rs.getString("type"), rs.getBoolean("remarquable"), rs.getString("location"), rs.getInt("num_votes"), rs.getString("domain"), rs.getString("address"), rs.getString("address_details"), rs.getString("district"), visiteList));
+                            }
+                        return treeList;
+                    }
+                catch (Exception e)
+                    {
+                        e.printStackTrace();
+                    }
+                return treeList;
+            }
+        
         public void addAllTree(ArrayList<Tree> treeList)
             {
                 for (Tree t : treeList)
@@ -131,7 +157,7 @@ public class DatabaseTools
                         ps.setInt(14, t.getId());
                         
                         ps.executeUpdate();
-    
+                        
                         for (Visite v : t.getVisites())
                             {
                                 ps = connection.prepareStatement(SQLREQUEST.updateTreeVisite);
@@ -148,15 +174,13 @@ public class DatabaseTools
                     }
             }
         
-        /*
-            Visite
-         *//*
+        /* Visite */
         public void addAllVisite(ArrayList<Visite> visiteList)
             {
                 for (Visite v : visiteList)
                     addVisite(v);
             }
-    
+        
         public void addVisite(Visite v)
             {
                 if (isAlreadyInBD(v))
@@ -164,7 +188,7 @@ public class DatabaseTools
                 else
                     insertVisite(v);
             }
-    
+        
         private boolean isAlreadyInBD(Visite v)
             {
                 try
@@ -180,28 +204,17 @@ public class DatabaseTools
                     }
                 return false;
             }
-    
+        
         private void insertVisite(Visite v)
             {
                 try
                     {
                         PreparedStatement ps = connection.prepareStatement(SQLREQUEST.insertVisite);
-                    
+                        
                         ps.setInt(1, v.getId());
-                        ps.setString(2, v.getNomfr());
-                        ps.setString(3, v.getAge());
-                        ps.setInt(4, v.getHauteur());
-                        ps.setInt(5, v.getEpaisseur());
-                        ps.setString(6, v.getEspece());
-                        ps.setString(7, v.getGenre());
-                        ps.setBoolean(8, v.isRemarquable());
-                        ps.setString(9, v.getEmplacement());
-                        ps.setInt(10, v.getNb_votes());
-                        ps.setString(11, v.getDomaine());
-                        ps.setString(12, v.getAdresse());
-                        ps.setString(13, v.getComplement());
-                        ps.setString(14, v.getArrondissement());
-                    
+                        ps.setDate(2, (Date) v.getDate());
+                        ps.setString(3, v.getRapport());
+                        
                         ps.executeUpdate();
                     }
                 catch (Exception e)
@@ -209,29 +222,18 @@ public class DatabaseTools
                         e.printStackTrace();
                     }
             }
-    
+        
         private void updateVisite(Visite v)
             {
                 try
                     {
                         PreparedStatement ps = connection.prepareStatement(SQLREQUEST.updateVisite);
-                    
-                        ps.setString(1, v.getNomfr());
-                        ps.setString(2, v.getAge());
-                        ps.setInt(3, v.getHauteur());
-                        ps.setInt(4, v.getEpaisseur());
-                        ps.setString(5, v.getEspece());
-                        ps.setString(6, v.getGenre());
-                        ps.setBoolean(7, v.isRemarquable());
-                        ps.setString(8, v.getEmplacement());
-                        ps.setInt(9, v.getNb_votes());
-                        ps.setString(10, v.getDomaine());
-                        ps.setString(11, v.getAdresse());
-                        ps.setString(12, v.getComplement());
-                        ps.setString(13, v.getArrondissement());
+                        
+                        ps.setDate(1, (Date) v.getDate());
+                        ps.setString(2, v.getRapport());
                         //Where
-                        ps.setInt(14, v.getId());
-                    
+                        ps.setInt(3, v.getId());
+                        
                         ps.executeUpdate();
                     }
                 catch (Exception e)
@@ -239,7 +241,6 @@ public class DatabaseTools
                         e.printStackTrace();
                     }
             }
-        */
         
         private String composeUrl() //TODO : finish
         {

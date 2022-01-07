@@ -39,12 +39,6 @@ public class ImportData
                 return treeList;
             }
         
-        public static void main(String[] args)
-            {
-                ImportData importData = new ImportData();
-                System.out.println(importData.importCSVAndCreateObject("/data.csv"));
-            }
-        
         public void printCSV(String path)
             {
                 for (String[] row : importCSV(path))

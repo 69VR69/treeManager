@@ -10,36 +10,43 @@ public class Association
     {
 
         private ArrayList<Member> members;
-        private ArrayList<Externe> donnaterus;
+        private ArrayList<Externe> donnateurs;
         private ArrayList<Tree> trees;
         private int nb_max_visite;
         private int montant_remboursement;
         private int montant_cotise;
 
         private int solde; //can't negative
-        private int cotisation; //somme cotisation
+
+        private int cotisations; //somme des cotisation
         private int dons; //somme des dons
         private int facture; //somme des facture
         private int defreiment; //somes des defreiments
 
+        //region builder
         Association(){
-            this.solde=0;
+            new Association(0,5,15,5);
         }
 
         Association(int solde){
-            this.solde = solde;
+            new Association(solde,5,15,5);
         }
 
-        public void add_member(Member m){
-            members.add(m);
+        Association(int solde, int nb_max_visite, int montant_cotise, int montant_remboursement){
+            this.solde=solde;
+            this.nb_max_visite = nb_max_visite;
+            this.montant_cotise=montant_cotise;
+            this.montant_remboursement=montant_remboursement;
+
+            cotisations=0;
+            dons=0;
+            facture=0;
+            defreiment=0;
         }
 
-        public void add_tree(Tree t){
-            trees.add(t);
-        }
+        //endregion
 
-
-
+        //region private money manage
         //verifiy asso has the money
         private boolean can_pay(int m){
             return ((solde=+m)>0);
@@ -63,36 +70,50 @@ public class Association
 
 
         private void add_don(int m){
-            dons+=m;
+            dons += m;
             change_sold(m);
         }
 
 
         private void add_cotise(){
-            cotisation+=montant_cotise;
+            cotisations += montant_cotise;
             change_sold(montant_cotise);
         }
 
+        private void reset_money(){
+            //TODO reset values
+        }
+        //endregion
 
-
-
-
-
-
-        public void ask_money(){//envoie au donateur une demende de don elle contient le dernier rapport
-
+        //envoie au donateur une demende de don elle contient le dernier rapport
+        public void ask_money(){
+            //TODO send report to one donator
         }
 
+        public void ask_money_all(){
+            //TODO send report to all donator
+        }
+
+
+        public Tree mayor_tree_select(ArrayList<Tree> t_list){
+            //TODO moove into mairie
+            return null;
+        }
 
         //fait le bilan de fin d'annee
         public void end_year(){
-            //ban membre
-
-
+            ban();
+            reset_money();
+            reset_member_payment();
+            ArrayList<Tree> trees5 = top5tree();
+            Tree the_choosen_one = mayor_tree_select(trees5);
+            make_tree_remarkable(the_choosen_one);
+            String report  = generateRapport();
+            ask_money_all();
         }
 
         //generateRapport() rapport financier
-        public void generateRapport(){
+        public String generateRapport(){
             String report =
                     "--- RAPPORT ---\n"+
                     "--- Dépenses --- \n " +
@@ -105,31 +126,71 @@ public class Association
                     "Solde : "+this.solde+"\n"
                     ;
 
-            //TODO soit le return soit le print
+            return report;
 
         }
 
 
-        //exclusion des membres () maybe trigger sql
+        //region members manage
+
+        //exclusion des membres qui ont pas payer
+        private  void reset_member_payment(){
+            //TODO reset memeber payment
+        }
+
+
+        public void pay_cotisation(){
+            add_cotise();
+        }
+
+        public void desinscrire(Member m) {
+            for (int i =0; i< members.size();i++){
+                if (members.get(i)==m){
+                    desinscrire(i,m);
+                    return;
+                }
+            }
+            //TODO warn user of the execution?
+            System.out.println("Not done yet!");
+        }
+
+        public void desinscrire(int index,Member m) {
+            m.deleteMember();//clean BD
+            members.remove(index); //remove from member list
+        }
+
+
         public void ban(){
-
-            //TODO iterate over members and trash unpaid one
+            for(int i =0;i<members.size();i++){
+                if (!members.get(i).hasPayed()){
+                    desinscrire(i,members.get(i));
+                }
+            }
+            //TODO warn user of ban?
         }
 
+        //endregion
+
+        //region trees manage
+        private void make_tree_remarkable(Tree the_chosen_one){
+            //TODO make one remarkable
+        }
         //selection 5 arbres dans ceux proposé par les membres
-        public void top5tree(){
-
+        private ArrayList<Tree> top5tree(){
+            //TODO do sql request
+            return null;
         }
+        //endregion
 
-        //créer visite
-        public void ask_visite(Tree t, Member member, Date date){ //demende de visite (check si arbre dispo dans +add si oui
+        //region visite manage
+
+        //demende de visite (check si arbre dispo dans +add si oui)
+        public void ask_visite(Tree t, Member member, Date date){
             if (!can_pay(montant_remboursement)){
                 //TODO warn, currently not enough money
                 //TODO to see if block the reservation of visite
-
+                //return;
             }
-
-
 
             if (member.getNbVisites()<nb_max_visite){//check if not
                //TODO chage the id
@@ -149,12 +210,8 @@ public class Association
                 //TODO warn user not enough money, report not validate
                 return;
             }
-
             pay_visite();
             v.setRapport(report);
-
-
-
         }
 
         public void ask_visite(Tree t, Member member ){
@@ -162,23 +219,63 @@ public class Association
             ask_visite(t,member,date);
         }
 
-        public void desinscrire(Member m) {
-            for (int i =0; i< members.size();i++){
-                if (members.get(i)==m){
-                    desinscrire(i,m);
-                    return;
-                }
+        //endregion
+
+        public void do_facture(int m){
+            if (!can_pay(m)){
+                //TODO warn user not enough money, invoice not paid
+                return;
             }
-
-            //TODO warn user the execution?
-            System.out.println("Not done yet!");
+            pay_facture(m);
         }
 
-        public void desinscrire(int index,Member m) {
-            m.deleteMember();//clean BD
-            members.remove(index); //remove from member list
-
+        public void give_don(int m){
+            add_don(m);
         }
 
+
+
+
+
+        //region Simple getter and setter
+        public int getNb_max_visite() {
+            return nb_max_visite;
+        }
+
+        public void setNb_max_visite(int nb_max_visite) {
+            this.nb_max_visite = nb_max_visite;
+        }
+
+        public int getMontant_remboursement() {
+            return montant_remboursement;
+        }
+
+        public void setMontant_remboursement(int montant_remboursement) {
+            this.montant_remboursement = montant_remboursement;
+        }
+
+        public int getMontant_cotise() {
+            return montant_cotise;
+        }
+
+        public void setMontant_cotise(int montant_cotise) {
+            this.montant_cotise = montant_cotise;
+        }
+
+        //endregion
+
+        //region adder in arraylist
+        public void add_member(Member m){
+            members.add(m);
+        }
+
+        public void add_tree(Tree t){
+            trees.add(t);
+        }
+
+        public void add_donnateurs(Externe e){
+            donnateurs.add(e);
+        }
+        //endregion
 
     }

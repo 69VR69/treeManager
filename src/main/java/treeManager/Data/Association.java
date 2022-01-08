@@ -14,12 +14,13 @@ public class Association
         private ArrayList<Tree> trees;
         private int nb_max_visite;
         private int montant_remboursement;
+        private int montant_cotise;
 
         private int solde; //can't negative
-        private int cotisation;
-        private int dons;
-        private int facture;
-        private int defreiment;
+        private int cotisation; //somme cotisation
+        private int dons; //somme des dons
+        private int facture; //somme des facture
+        private int defreiment; //somes des defreiments
 
         Association(){
             this.solde=0;
@@ -37,17 +38,74 @@ public class Association
             trees.add(t);
         }
 
-        private void add_money(){
 
+
+        //verifiy asso has the money
+        private boolean can_pay(int m){
+            return ((solde=+m)>0);
         }
+
+        //modify the sold of asso
+        private void change_sold(int m){
+            solde +=m;
+        }
+
+        private void pay_facture(int m){
+            facture += m;
+            change_sold(-m);
+        }
+
+
+        private void pay_visite(){
+            defreiment+=montant_remboursement;
+            change_sold(-montant_remboursement);
+        }
+
+
+        private void add_don(int m){
+            dons+=m;
+            change_sold(m);
+        }
+
+
+        private void add_cotise(){
+            cotisation+=montant_cotise;
+            change_sold(montant_cotise);
+        }
+
+
+
+
+
+
 
         public void ask_money(){//envoie au donateur une demende de don elle contient le dernier rapport
 
         }
 
 
+        //fait le bilan de fin d'annee
+        public void end_year(){
+            //ban membre
+
+
+        }
+
         //generateRapport() rapport financier
         public void generateRapport(){
+            String report =
+                    "--- RAPPORT ---\n"+
+                    "--- Dépenses --- \n " +
+                    "Total Factures : "+ this.facture+ "\n" +
+                    " Total Visites : "+this.defreiment+"\n"+
+                    "--- Revenus ---\n"+
+                    "Total Factures : "+ this.facture+ "\n" +
+                    " Total Visites : "+this.defreiment+"\n"+
+                    "--- Solde ---\n"+
+                    "Solde : "+this.solde+"\n"
+                    ;
+
+            //TODO soit le return soit le print
 
         }
 
@@ -55,6 +113,7 @@ public class Association
         //exclusion des membres () maybe trigger sql
         public void ban(){
 
+            //TODO iterate over members and trash unpaid one
         }
 
         //selection 5 arbres dans ceux proposé par les membres
@@ -64,9 +123,17 @@ public class Association
 
         //créer visite
         public void ask_visite(Tree t, Member member, Date date){ //demende de visite (check si arbre dispo dans +add si oui
-            //TODO check if money else warn currently have not enougn money
+            if (!can_pay(montant_remboursement)){
+                //TODO warn, currently not enough money
+                //TODO to see if block the reservation of visite
+
+            }
+
+
+
             if (member.getNbVisites()<nb_max_visite){//check if not
-                Visite v= new Visite(member,date);
+               //TODO chage the id
+                Visite v= new Visite(0, member,date);
                 //TODO add check not multiple visit on the same day
                 t.add_visite(v);
                 member.incVisites();
@@ -78,7 +145,16 @@ public class Association
 
         //ajoute le rapport a la visite + defreiment
         public void  do_visite(Visite v,String report){
-            //TODO check if money else warn not money so no refund
+            if (!can_pay(montant_remboursement)){
+                //TODO warn user not enough money, report not validate
+                return;
+            }
+
+            pay_visite();
+            v.setRapport(report);
+
+
+
         }
 
         public void ask_visite(Tree t, Member member ){
@@ -87,9 +163,21 @@ public class Association
         }
 
         public void desinscrire(Member m) {
-            // TODO désinscrire un membre en le supprimant des 'members' (lister les membres puis supprimer en inputant un ID maybe?)
-            // cf. leftover fonction de President
+            for (int i =0; i< members.size();i++){
+                if (members.get(i)==m){
+                    desinscrire(i,m);
+                    return;
+                }
+            }
+
+            //TODO warn user the execution?
             System.out.println("Not done yet!");
+        }
+
+        public void desinscrire(int index,Member m) {
+            m.deleteMember();//clean BD
+            members.remove(index); //remove from member list
+
         }
 
 

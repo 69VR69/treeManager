@@ -102,6 +102,12 @@ public class Member implements Entity
             }
         }
 
+
+
+        public void deleteMember(){
+            //TODO delete the memeber information from the BD (to be RGPD compliant)
+        }
+
         /*
         // DEPRECATED (mais mis de côté au cas où : du code pour choisir l'arbre à entrer)
         public void proposeTree() {

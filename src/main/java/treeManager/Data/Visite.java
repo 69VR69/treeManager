@@ -10,14 +10,15 @@ public class Visite
         private Date date;
         private String rapport;
         private Member member;
-
-        public Visite(int id, Member member, Date date) {
-            this.id = id;
-            this.date = date;
-            this.rapport = "";
-            this.member = member;
-        }
-    
+        
+        public Visite(Member member, Date date)
+            {
+                this.id = 0;
+                this.date = date;
+                this.rapport = "";
+                this.member = member;
+            }
+        
         public Visite(int id, Date date, String rapport, Member member)
             {
                 this.id = id;
@@ -25,11 +26,12 @@ public class Visite
                 this.rapport = rapport;
                 this.member = member;
             }
-    
-        public Visite(){
-
-        }
-    
+        
+        public Visite()
+            {
+            
+            }
+        
         public int getId()
             {
                 return id;

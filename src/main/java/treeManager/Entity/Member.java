@@ -8,6 +8,10 @@ public class Member implements Entity
     {
         // --- Variables ---
         /**
+         * ID of the Member in the DB
+         */
+        private int id;
+        /**
          * Name of the Member
          */
         private String nom;
@@ -23,19 +27,35 @@ public class Member implements Entity
          * Number of tree visits done
          */
         private int nbVisites;
-        
-        private int id;
-        
+        /**
+         * Boolean to identify president
+         */
+        protected boolean isPresident;
+
         // --- Getters & Setters ---
         
         /**
-         * Get the name of the member
+        * Get the id of the member
+        */
+        public int getId() {
+            return id;
+        }
+
+        /**
+         * Sets the id of the member
+         * @param id
          */
-        public String getNom()
-            {
-                return nom;
-            }
-        
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        /**
+        * Get the name of the member
+        */
+        public String getNom() {
+            return nom;
+        }
+
         /**
          * Sets the name of the member
          *
@@ -62,16 +82,6 @@ public class Member implements Entity
                 return proposedTrees;
             }
         
-        public int getId()
-            {
-                return id;
-            }
-        
-        public void setId(int id)
-            {
-                this.id = id;
-            }
-        
         /**
          * Set the trees proposed for nomination by the member
          *
@@ -93,11 +103,17 @@ public class Member implements Entity
         /**
          * Increments the number of visits done by the member
          */
-        public void incVisites()
-            {
-                this.nbVisites++;
-            }
-        
+        public void incVisites() {
+            this.nbVisites++;
+        }
+
+        /**
+        * Return true if the member is president, or false if not
+        */
+        public boolean isPresident() {
+            return isPresident;
+        }
+
         // --- Fonctions membres ---
         
         /**
@@ -171,28 +187,32 @@ public class Member implements Entity
         */
         
         // --- Constructeurs ---
+        /**
+         * Simple member constructor
+         * @param nom
+         */
+        public Member(String nom) {
+            this.id = 0;
+            this.hasPayed = false;
+            this.proposedTrees = new ArrayList<Tree>();
+            this.nom = nom;
+            this.nbVisites = 0;
+        }
         
         /**
          * Member constructor
-         *
+         * @param id
          * @param nom
+         * @param nbVisites
+         * @param hasPayed
+         * @param proposedTrees
          */
-        public Member(String nom)
-            {
-                this.id = 0;
-                this.hasPayed = false;
-                this.proposedTrees = new ArrayList<Tree>();
-                this.nom = nom;
-                this.nbVisites = 0;
-            }
-        
-        public Member(int id, String nom, int nbVisites, boolean hasPayed, ArrayList<Tree> proposedTrees)
-            {
-                this.id = 0;
-                this.hasPayed = false;
-                this.proposedTrees = new ArrayList<Tree>();
-                this.nom = nom;
-                this.nbVisites = 0;
-            }
+        public Member(int id, String nom, int nbVisites, boolean hasPayed, ArrayList<Tree> proposedTrees) {
+            this.id = 0;
+            this.hasPayed = false;
+            this.proposedTrees = new ArrayList<Tree>();
+            this.nom = nom;
+            this.nbVisites = 0;
+        }
     }
 ;

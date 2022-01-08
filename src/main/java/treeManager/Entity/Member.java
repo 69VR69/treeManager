@@ -1,6 +1,7 @@
 package treeManager.Entity;
 
 import treeManager.Data.Tree;
+import treeManager.Data.Visite;
 
 import java.util.ArrayList;
 
@@ -23,14 +24,13 @@ public class Member implements Entity
          * Trees proposed for nomination by the member
          */
         private ArrayList<Tree> proposedTrees;
+        
+        private ArrayList<Visite> visites;
+        
         /**
          * Number of tree visits done
          */
         private int nbVisites;
-        /**
-         * Boolean to identify president
-         */
-        protected boolean isPresident;
 
         // --- Getters & Setters ---
         
@@ -105,13 +105,6 @@ public class Member implements Entity
          */
         public void incVisites() {
             this.nbVisites++;
-        }
-
-        /**
-        * Return true if the member is president, or false if not
-        */
-        public boolean isPresident() {
-            return isPresident;
         }
 
         // --- Fonctions membres ---

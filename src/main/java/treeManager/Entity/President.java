@@ -1,5 +1,9 @@
 package treeManager.Entity;
 
+import treeManager.Data.Tree;
+
+import java.util.ArrayList;
+
 public class President extends Member
     {
         // --- Fonctions membres ---
@@ -38,5 +42,10 @@ public class President extends Member
         public President(String nom)
             {
                 super(nom);
+            }
+    
+        public President(int id, String nom, int nbVisites, boolean hasPayed, ArrayList<Tree> proposedTrees)
+            {
+                super(id, nom, nbVisites, hasPayed, proposedTrees);
             }
     }

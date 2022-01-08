@@ -1,5 +1,6 @@
 package treeManager;
 
+import treeManager.Data.Association;
 import treeManager.Data.Tree;
 import treeManager.Data.Visite;
 import treeManager.Entity.Externe;
@@ -36,13 +37,23 @@ public class DatabaseTools
                         e.printStackTrace();
                     }
             }
-    
+        
         private String composeUrl()
             {
                 return "jdbc:mariadb://" + ip + ":3306/tree_manager?user=" + getUser() + "&password=" + getPassword();
             }
+        
+        public String getUser()
+            {
+                return user;
+            }
     
-    
+        public String getPassword()
+            {
+                return password;
+            }
+        
+        
         //region Tree
         public ArrayList<Tree> getAllTree()
             {
@@ -51,19 +62,21 @@ public class DatabaseTools
                     {
                         PreparedStatement ps = connection.prepareStatement(SQLREQUEST.selectAllTree);
                         ResultSet rs = ps.executeQuery();
+                        
                         while (rs.next())
                             {
-                                PreparedStatement ps2 = connection.prepareStatement(SQLREQUEST.selectVisiteForTree);
-                                ps2.setInt(1, rs.getInt("idPrimaire"));
-                                ResultSet rs2 = ps2.executeQuery();
                                 ArrayList<Visite> visiteList = new ArrayList<>();
+                                PreparedStatement ps2 = connection.prepareStatement(SQLREQUEST.selectVisiteForTree);
+                                ps2.setInt(1, rs.getInt("id"));
+                                ResultSet rs2 = ps2.executeQuery();
+                                
                                 while (rs2.next())
                                     {
-                                        Member member = new Member("test"); // TODO get member
+                                        Member member = getMemberById(rs2.getInt("id_membre"));
                                         visiteList.add(new Visite(rs2.getInt("id"), rs2.getDate("date"), rs2.getString("rapport"), member));
                                     }
                                 
-                                treeList.add(new Tree(rs.getInt("idPrimaire"), rs.getString("name_fr"), rs.getString("age"), rs.getInt("height"), rs.getInt("thickness"), rs.getString("species"), rs.getString("type"), rs.getBoolean("remarquable"), rs.getString("location"), rs.getInt("num_votes"), rs.getString("domain"), rs.getString("address"), rs.getString("address_details"), rs.getString("district"), visiteList));
+                                treeList.add(new Tree(rs.getInt("id"), rs.getString("name_fr"), rs.getString("age"), rs.getInt("height"), rs.getInt("thickness"), rs.getString("species"), rs.getString("type"), rs.getBoolean("remarquable"), rs.getString("location"), rs.getInt("num_votes"), rs.getString("domain"), rs.getString("address"), rs.getString("address_details"), rs.getString("district"), visiteList));
                             }
                         return treeList;
                     }
@@ -74,7 +87,7 @@ public class DatabaseTools
                 return treeList;
             }
         
-     /*   public ArrayList<Tree> getFiveTreeByVote()
+        public ArrayList<Tree> getFiveTreeByVote()
             {
                 ArrayList<Tree> treeList = new ArrayList<>();
                 try
@@ -84,7 +97,7 @@ public class DatabaseTools
                         while (rs.next())
                             {
                                 PreparedStatement ps2 = connection.prepareStatement(SQLREQUEST.selectVisiteForTree);
-                                ps2.setInt(1, rs.getInt("idPrimaire"));
+                                ps2.setInt(1, rs.getInt("id"));
                                 ResultSet rs2 = ps2.executeQuery();
                                 ArrayList<Visite> visiteList = new ArrayList<>();
                                 while (rs2.next())
@@ -93,7 +106,7 @@ public class DatabaseTools
                                         visiteList.add(new Visite(rs2.getInt("id"), rs2.getDate("date"), rs2.getString("rapport"), member));
                                     }
                                 
-                                treeList.add(new Tree(rs.getInt("idPrimaire"), rs.getString("name_fr"), rs.getString("age"), rs.getInt("height"), rs.getInt("thickness"), rs.getString("species"), rs.getString("type"), rs.getBoolean("remarquable"), rs.getString("location"), rs.getInt("num_votes"), rs.getString("domain"), rs.getString("address"), rs.getString("address_details"), rs.getString("district"), visiteList));
+                                treeList.add(new Tree(rs.getInt("id"), rs.getString("name_fr"), rs.getString("age"), rs.getInt("height"), rs.getInt("thickness"), rs.getString("species"), rs.getString("type"), rs.getBoolean("remarquable"), rs.getString("location"), rs.getInt("num_votes"), rs.getString("domain"), rs.getString("address"), rs.getString("address_details"), rs.getString("district"), visiteList));
                             }
                         return treeList;
                     }
@@ -102,8 +115,8 @@ public class DatabaseTools
                         e.printStackTrace();
                     }
                 return treeList;
-            }*/
-    
+            }
+        
         public void addAllTree(ArrayList<Tree> treeList)
             {
                 for (Tree t : treeList)
@@ -205,8 +218,8 @@ public class DatabaseTools
                         for (Visite v : t.getVisites())
                             {
                                 ps = connection.prepareStatement(SQLREQUEST.updateTreeVisite);
-                                ps.setInt(1, t.getId());
-                                ps.setInt(2, v.getId());
+                                ps.setInt(1, v.getId());
+                                ps.setInt(2, t.getId());
                                 ps.executeUpdate();
                             }
                         
@@ -262,6 +275,7 @@ public class DatabaseTools
                         ps.setInt(1, v.getId());
                         ps.setDate(2, (Date) v.getDate());
                         ps.setString(3, v.getRapport());
+                        ps.setInt(4, v.getMember().getId());
                         
                         ps.executeUpdate();
                         
@@ -283,6 +297,7 @@ public class DatabaseTools
                         
                         ps.setDate(1, (Date) v.getDate());
                         ps.setString(2, v.getRapport());
+                        ps.setInt(3, v.getMember().getId());
                         //Where
                         ps.setInt(3, v.getId());
                         
@@ -294,7 +309,7 @@ public class DatabaseTools
                     }
             }
         //endregion
-        /*
+        
         //region Membre
         public void addAllMember(ArrayList<Member> memberList)
             {
@@ -310,11 +325,36 @@ public class DatabaseTools
                     insertMember(m);
             }
         
-        private Member getMemberById(int id_member)
-            {
-                //TODO : complete
-                return null;
-            }
+        private Member getMemberById(int id_member) //TODO : is in loop
+        {
+            try
+                {
+                    PreparedStatement ps = connection.prepareStatement(SQLREQUEST.selectMember);
+                    ResultSet rs = ps.executeQuery();
+                    rs.next();
+                    
+                    ArrayList<Tree> treeList = new ArrayList<>();
+                    PreparedStatement ps2 = connection.prepareStatement(SQLREQUEST.selectTreeForMember);
+                    ps2.setInt(1, rs.getInt("id"));
+                    ResultSet rs2 = ps2.executeQuery();
+                    
+                    while (rs2.next())
+                        {
+                            //treeList.add(new Tree());
+                        }
+                    
+                    if (rs.getBoolean("is_president"))
+                        return new President(rs.getInt("id"), rs.getString("name"), rs.getInt("num_visite"), rs.getBoolean("has_played"), treeList);
+                    else
+                        return new Member(rs.getInt("id"), rs.getString("name"), rs.getInt("num_visite"), rs.getBoolean("has_played"), treeList);
+                }
+            catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+            
+            return null;
+        }
         
         private boolean isAlreadyInBD(Member m)
             {
@@ -323,7 +363,7 @@ public class DatabaseTools
                 
                 try
                     {
-                        PreparedStatement ps = connection.prepareStatement(SQLREQUEST.selectVisite);
+                        PreparedStatement ps = connection.prepareStatement(SQLREQUEST.selectMember);
                         ps.setInt(1, m.getId());
                         ResultSet rs = ps.executeQuery();
                         return rs.next();
@@ -339,17 +379,28 @@ public class DatabaseTools
             {
                 try
                     {
-                        PreparedStatement ps = connection.prepareStatement(SQLREQUEST.insertVisite);
+                        PreparedStatement ps = connection.prepareStatement(SQLREQUEST.insertMember);
                         
                         ps.setString(1, m.getNom());
                         ps.setInt(2, m.getNbVisites());
                         ps.setBoolean(3, m.hasPayed());
+                        ps.setBoolean(4, (m instanceof President));
                         
                         ps.executeUpdate();
                         
                         ResultSet getId = ps.getGeneratedKeys();
                         getId.next();
                         m.setId(getId.getInt("id"));
+                        
+                        for (Tree t : m.getProposedTrees())
+                            {
+                                ps = connection.prepareStatement(SQLREQUEST.insertMemberTree);
+                                ps.setInt(1, m.getId());
+                                ps.setInt(2, t.getId());
+                                ps.executeUpdate();
+                            }
+                        
+                        ps.close();
                     }
                 catch (Exception e)
                     {
@@ -361,15 +412,26 @@ public class DatabaseTools
             {
                 try
                     {
-                        PreparedStatement ps = connection.prepareStatement(SQLREQUEST.updateVisite);
+                        PreparedStatement ps = connection.prepareStatement(SQLREQUEST.updateMember);
                         
-                        ps.setDate(1, (Date) m.getDate());
-                        ps.setString(2, m.getRapport());
-                        ps.setBoolean(3, (m instanceof President));
+                        ps.setString(1, m.getNom());
+                        ps.setInt(2, m.getNbVisites());
+                        ps.setBoolean(3, m.hasPayed());
+                        ps.setBoolean(4, (m instanceof President));
                         //Where
-                        ps.setInt(4, m.getId());
+                        ps.setInt(5, m.getId());
                         
                         ps.executeUpdate();
+                        
+                        for (Tree t : m.getProposedTrees())
+                            {
+                                ps = connection.prepareStatement(SQLREQUEST.updateMemberTree);
+                                ps.setInt(1, t.getId());
+                                ps.setInt(2, m.getId());
+                                ps.executeUpdate();
+                            }
+                        
+                        ps.close();
                     }
                 catch (Exception e)
                     {
@@ -379,11 +441,24 @@ public class DatabaseTools
         
         private void removeMember(Member m)
             {
-                //TODO : complete
+                try
+                    {
+                        PreparedStatement ps = connection.prepareStatement(SQLREQUEST.deleteMember);
+                        //Where
+                        ps.setInt(1, m.getId());
+                        
+                        ps.executeUpdate();
+                        
+                        ps.close();
+                    }
+                catch (Exception e)
+                    {
+                        e.printStackTrace();
+                    }
             }
         
-        //endregion*/
-        /*
+        //endregion
+        
         //region Externe
         public void addAllExterne(ArrayList<Externe> externeList)
             {
@@ -406,7 +481,7 @@ public class DatabaseTools
                 
                 try
                     {
-                        PreparedStatement ps = connection.prepareStatement(SQLREQUEST.selectVisite);
+                        PreparedStatement ps = connection.prepareStatement(SQLREQUEST.selectExterne);
                         ps.setInt(1, e.getId());
                         ResultSet rs = ps.executeQuery();
                         return rs.next();
@@ -422,11 +497,9 @@ public class DatabaseTools
             {
                 try
                     {
-                        PreparedStatement ps = connection.prepareStatement(SQLREQUEST.insertVisite);
+                        PreparedStatement ps = connection.prepareStatement(SQLREQUEST.insertExterne);
                         
-                        ps.setInt(1, e.getId());
-                        ps.setDate(2, (Date) e.getDate());
-                        ps.setString(3, e.getRapport());
+                        //ps.setInt(1, e.getId());
                         
                         ps.executeUpdate();
                         
@@ -440,34 +513,136 @@ public class DatabaseTools
                     }
             }
         
-        private void updateExterne(Externe e)
+        private void updateExterne(Externe e) //Do nothing
+        {
+            try
+                {
+                    PreparedStatement ps = connection.prepareStatement(SQLREQUEST.updateExterne);
+                    //Where
+                    ps.setInt(3, e.getId());
+                    
+                    ps.executeUpdate();
+                }
+            catch (Exception exception)
+                {
+                    exception.printStackTrace();
+                }
+        }
+        //endregion*/
+        
+        //region Association
+        public Association getAssociation()
+            {
+                Association association;
+                try
+                    {
+                        PreparedStatement ps = connection.prepareStatement(SQLREQUEST.selectAssociation);
+                        ResultSet rs = ps.executeQuery();
+                        rs.next();
+                        
+                        //Externe
+                        PreparedStatement ps1 = connection.prepareStatement(SQLREQUEST.selectAssociationExterne);
+                        ps1.setInt(1, rs.getInt("id"));
+                        ResultSet rs1 = ps1.executeQuery();
+                        ArrayList<Externe> externeList = new ArrayList<>();
+                        while (rs1.next())
+                            {
+                                Externe tempExterne = new Externe(rs1.getInt("id"));
+                                externeList.add(tempExterne);
+                            }
+                        
+                        //Member
+                        PreparedStatement ps2 = connection.prepareStatement(SQLREQUEST.selectAssociationMember);
+                        ps2.setInt(1, rs.getInt("id"));
+                        ResultSet rs2 = ps2.executeQuery();
+                        ArrayList<Member> memberList = new ArrayList<>();
+                        while (rs2.next())
+                            {
+                               // Member tempMember = new Member(rs1.getInt("id"), ); //TODO : will loop with tree
+                               // memberList.add(tempMember);
+                            }
+                        
+                        //Tree
+                        PreparedStatement ps3 = connection.prepareStatement(SQLREQUEST.selectAssociationTree);
+                        ps3.setInt(1, rs.getInt("id"));
+                        ResultSet rs3 = ps3.executeQuery();
+                        ArrayList<Tree> treeList = new ArrayList<>();
+                        while (rs3.next())
+                            {
+                                ArrayList<Visite> visiteList = new ArrayList<>();
+                                PreparedStatement ps3bis = connection.prepareStatement(SQLREQUEST.selectVisiteForTree);
+                                ps3bis.setInt(1, rs3.getInt("id"));
+                                ResultSet rs3bis = ps3bis.executeQuery();
+    
+                                while (rs3bis.next())
+                                    {
+                                        Member member = getMemberById(rs3bis.getInt("id_membre"));
+                                        visiteList.add(new Visite(rs3bis.getInt("id"), rs3bis.getDate("date"), rs3bis.getString("rapport"), member));
+                                    }
+                                
+                                Tree tempTree = new Tree(rs3.getInt("id"), rs3.getString("name_fr"), rs3.getString("age"), rs3.getInt("height"), rs3.getInt("thickness"), rs3.getString("species"), rs3.getString("type"), rs3.getBoolean("remarquable"), rs3.getString("location"), rs3.getInt("num_votes"), rs3.getString("domain"), rs3.getString("address"), rs3.getString("address_details"), rs3.getString("district"), visiteList);
+                                treeList.add(tempTree);
+                            }
+                        
+                        return new Association(rs.getInt("num_max_visite"), rs.getInt("refund_amount"), rs.getInt("contributed_amount"), rs.getInt("balance"), rs.getInt("contribution"), rs.getInt("donation"), rs.getInt("invoice"), rs.getInt("defrayal"), memberList, externeList, treeList);
+                    }
+                catch (Exception e)
+                    {
+                        e.printStackTrace();
+                    }
+                
+                return null;
+            }
+        
+        private void updateAssociation(Association a)
             {
                 try
                     {
-                        PreparedStatement ps = connection.prepareStatement(SQLREQUEST.updateVisite);
+                        PreparedStatement ps = connection.prepareStatement(SQLREQUEST.updateAssociation);
                         
-                        ps.setDate(1, (Date) e.getDate());
-                        ps.setString(2, e.getRapport());
+                        ps.setInt(1, a.getNb_max_visite());
+                        ps.setInt(2, a.getMontant_remboursement());
+                        ps.setInt(3, a.getMontant_cotise());
+                        ps.setInt(4, a.getSolde());
+                        ps.setInt(5, a.getCotisations());
+                        ps.setInt(6, a.getDons());
+                        ps.setInt(7, a.getFacture());
+                        ps.setInt(8, a.getDefreiment());
                         //Where
-                        ps.setInt(3, e.getId());
+                        ps.setInt(14, 0);
                         
                         ps.executeUpdate();
+                        
+                        for (Member m : a.getMembers())
+                            {
+                                ps = connection.prepareStatement(SQLREQUEST.updateAssociationMember);
+                                ps.setInt(1, 0);
+                                ps.setInt(2, m.getId());
+                                ps.executeUpdate();
+                            }
+                        
+                        for (Externe e : a.getDonnateurs())
+                            {
+                                ps = connection.prepareStatement(SQLREQUEST.updateAssociationExterne);
+                                ps.setInt(1, 0);
+                                ps.setInt(2, e.getId());
+                                ps.executeUpdate();
+                            }
+                        
+                        for (Tree t : a.getTrees())
+                            {
+                                ps = connection.prepareStatement(SQLREQUEST.updateAssociationTree);
+                                ps.setInt(1, 0);
+                                ps.setInt(2, t.getId());
+                                ps.executeUpdate();
+                            }
+                        
+                        ps.close();
                     }
-                catch (Exception exception)
+                catch (Exception e)
                     {
-                        exception.printStackTrace();
+                        e.printStackTrace();
                     }
             }
-        //endregion*/
-        
-        
-        public String getUser()
-            {
-                return user;
-            }
-        
-        public String getPassword()
-            {
-                return password;
-            }
+        //endregion
     }

@@ -4,6 +4,7 @@ import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
 import treeManager.Data.Tree;
 
+import javax.xml.crypto.Data;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -37,6 +38,18 @@ public class ImportData
                     treeList.add(new Tree(Integer.parseInt(o[0]), o[8], o[14], Integer.parseInt(o[13]), Integer.parseInt(o[12]), o[10], o[9], !(o[15] == null || o[15].equalsIgnoreCase("non")), o[7], 0, o[2], o[3], o[6], o[4], new ArrayList<>()));
                 
                 return treeList;
+            }
+        
+        public void csvToDB(String path, DatabaseTools db)
+            {
+                db.addAllTree(importCSVAndCreateObject(path));
+            }
+    
+        public static void main(String[] args)
+            {
+                DatabaseTools db = new DatabaseTools("192.168.1.81","tree_manager","");
+                ImportData importData = new ImportData();
+                //importData.csvToDB("/data.csv",db);
             }
         
         public void printCSV(String path)

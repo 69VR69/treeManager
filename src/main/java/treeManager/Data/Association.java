@@ -17,7 +17,7 @@ public class Association
         private int cotisations; //somme des cotisation
         private int dons; //somme des dons
         private int facture; //somme des facture
-        private int defreiment; //somes des defreiments
+        private int defreiment; //somme des defreiments
         
         private ArrayList<Member> members;
         private ArrayList<Externe> donnateurs;
@@ -306,7 +306,47 @@ public class Association
             {
                 this.montant_cotise = montant_cotise;
             }
-        
+    
+        public ArrayList<Member> getMembers()
+            {
+                return members;
+            }
+    
+        public ArrayList<Externe> getDonnateurs()
+            {
+                return donnateurs;
+            }
+    
+        public ArrayList<Tree> getTrees()
+            {
+                return trees;
+            }
+    
+        public int getSolde()
+            {
+                return solde;
+            }
+    
+        public int getCotisations()
+            {
+                return cotisations;
+            }
+    
+        public int getDons()
+            {
+                return dons;
+            }
+    
+        public int getFacture()
+            {
+                return facture;
+            }
+    
+        public int getDefreiment()
+            {
+                return defreiment;
+            }
+    
         //endregion
         
         //region adder in arraylist

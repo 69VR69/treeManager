@@ -9,14 +9,13 @@ public class Visite
         private int id;
         private Date date;
         private String rapport;
-        private Member member;
+        private Tree tree;
         
         public Visite(Member member, Date date)
             {
                 this.id = 0;
                 this.date = date;
                 this.rapport = "";
-                this.member = member;
             }
         
         public Visite(int id, Date date, String rapport, Member member)
@@ -61,7 +60,12 @@ public class Visite
             {
                 this.rapport = rapport;
             }
-        
+    
+        public Member getMember()
+            {
+                return member;
+            }
+    
         @Override public String toString()
             {
                 return "Visite{" + "date=" + date + ", rapport='" + rapport + '\'' + '}';

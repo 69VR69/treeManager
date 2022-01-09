@@ -107,6 +107,26 @@ public class DatabaseTools
                 return treeList;
             }
         
+        public ArrayList<Tree> getRemarquableTreeByAge()
+            {
+                ArrayList<Tree> treeList = new ArrayList<>();
+                try
+                    {
+                        PreparedStatement ps = connection.prepareStatement(SQLREQUEST.selectRemarquableTreeByAge);
+                        ResultSet rs = ps.executeQuery();
+                        while (rs.next())
+                            {
+                                treeList.add(new Tree(rs.getInt("id"), rs.getString("name_fr"), rs.getString("age"), rs.getInt("height"), rs.getInt("thickness"), rs.getString("species"), rs.getString("type"), rs.getBoolean("remarquable"), rs.getString("location"), rs.getInt("num_votes"), rs.getString("domain"), rs.getString("address"), rs.getString("address_details"), rs.getString("district")));
+                            }
+                        return treeList;
+                    }
+                catch (Exception e)
+                    {
+                        e.printStackTrace();
+                    }
+                return treeList;
+            }
+        
         public Tree getTreeById(int id)
             {
                 try

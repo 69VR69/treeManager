@@ -10,6 +10,9 @@ import treeManager.Entity.President;
 import java.sql.*;
 import java.util.ArrayList;
 
+/**
+ * Classe gérant les accès à la base de donnée
+ */
 public class DatabaseTools
     {
         private final String ip;
@@ -17,6 +20,13 @@ public class DatabaseTools
         private final String password;
         private Connection connection;
         
+        /**
+         * Constructeur
+         *
+         * @param ip       ip du serveur MariaDB
+         * @param user     identifiant de l'utilisateur du serveur MariaDB
+         * @param password mot de passe de l'utilisateur du serveur MariaDB
+         */
         public DatabaseTools(String ip, String user, String password)
             {
                 this.ip = ip;
@@ -25,6 +35,12 @@ public class DatabaseTools
                 this.open(user, password);
             }
         
+        /**
+         * Permet d'ouvrir la connexion
+         *
+         * @param user     identifiant de l'utilisateur du serveur MariaDB
+         * @param password mot de passe de l'utilisateur du serveur MariaDB
+         */
         public void open(String user, String password)
             {
                 try
@@ -38,6 +54,11 @@ public class DatabaseTools
                     }
             }
         
+        /**
+         * Construit l'url de connexion au serveur
+         *
+         * @return retourne l'url construit
+         */
         private String composeUrl()
             {
                 String url = "jdbc:mariadb://" + ip + ":3306/tree_manager";
@@ -47,25 +68,33 @@ public class DatabaseTools
                 return url;
             }
         
+        /**
+         * Recupère l'utilisateur
+         *
+         * @return retourne l'utilisateur
+         */
         public String getUser()
             {
                 return user;
             }
         
+        /**
+         * Récupère le mot de passe
+         *
+         * @return retourne ce mot passe
+         */
         public String getPassword()
             {
                 return password;
             }
         
-        public void storeAllObjectInDB(ArrayList<Tree> treeList, ArrayList<Visite> visiteList, ArrayList<Member> memberList, Association asso)
-            {
-                addAllTree(treeList);
-                addAllVisite(visiteList);
-                addAllMember(memberList);
-                updateAssociation(asso);
-            }
-        
         //region Tree
+        
+        /**
+         * Récupère tous les arbres
+         *
+         * @return retourne un ArrayList d'arbres
+         */
         public ArrayList<Tree> getAllTree()
             {
                 ArrayList<Tree> treeList = new ArrayList<>();
@@ -87,6 +116,11 @@ public class DatabaseTools
                 return treeList;
             }
         
+        /**
+         * Récupère les cinq arbres avec le plus de vote
+         *
+         * @return retourne un ArrayList d'arbres
+         */
         public ArrayList<Tree> getFiveTreeByVote()
             {
                 ArrayList<Tree> treeList = new ArrayList<>();
@@ -107,7 +141,12 @@ public class DatabaseTools
                 return treeList;
             }
         
-        public ArrayList<Tree> getRemarquableTreeByAge()
+        /**
+         * Récupère les arbres remarquables trié par visite la plus ancienne
+         *
+         * @return retourne un ArrayList d'arbres
+         */
+        public ArrayList<Tree> getRemarquableTreeByOldVisite()
             {
                 ArrayList<Tree> treeList = new ArrayList<>();
                 try
@@ -127,6 +166,12 @@ public class DatabaseTools
                 return treeList;
             }
         
+        /**
+         * Récupère un arbre en fonction de son identifiant de Base de Donnée
+         *
+         * @param id identifiant de Base de Donnée
+         * @return retourne un arbre
+         */
         public Tree getTreeById(int id)
             {
                 try
@@ -144,12 +189,22 @@ public class DatabaseTools
                 return null;
             }
         
+        /**
+         * Ajoute une liste d'arbres dans la Base de Donnée
+         *
+         * @param treeList ArrayList d'arbres
+         */
         public void addAllTree(ArrayList<Tree> treeList)
             {
                 for (Tree t : treeList)
                     addTree(t);
             }
         
+        /**
+         * Ajoute un arbre à la base de donnée et décide s'il doit passer par une insertion ou une mise à jour
+         *
+         * @param t un Arbre
+         */
         public void addTree(Tree t)
             {
                 if (isAlreadyInBD(t))
@@ -158,6 +213,12 @@ public class DatabaseTools
                     insertTree(t);
             }
         
+        /**
+         * Vérifie si l'arbre existe en Base de Donnée
+         *
+         * @param t un Arbre
+         * @return retourne vrai si l'arbre existe en Base de Donnée
+         */
         private boolean isAlreadyInBD(Tree t)
             {
                 if (t.getId() == 0)
@@ -177,6 +238,11 @@ public class DatabaseTools
                 return false;
             }
         
+        /**
+         * Insere un arbre dans la Base de Donnée
+         *
+         * @param t un Arbre
+         */
         private void insertTree(Tree t)
             {
                 try
@@ -207,6 +273,11 @@ public class DatabaseTools
                     }
             }
         
+        /**
+         * Met à jour un arbre de la Base de Donnée
+         *
+         * @param t un Arbre
+         */
         private void updateTree(Tree t)
             {
                 try
@@ -241,6 +312,12 @@ public class DatabaseTools
         //endregion Tree
         
         //region Visite
+        
+        /**
+         * Récupère tous les visite
+         *
+         * @return retourne un ArrayList de visite
+         */
         public ArrayList<Visite> getAllVisite()
             {
                 ArrayList<Visite> visiteList = new ArrayList<>();
@@ -263,6 +340,12 @@ public class DatabaseTools
                 return visiteList;
             }
         
+        /**
+         * Récupère une visite en fonction de son identifiant de Base de Donnée
+         *
+         * @param id identifiant de Base de Donnée
+         * @return retourne une visite
+         */
         public Visite getVisiteById(int id)
             {
                 try
@@ -283,12 +366,22 @@ public class DatabaseTools
                 return null;
             }
         
+        /**
+         * Ajoute une liste de visite dans la Base de Donnée
+         *
+         * @param visiteList ArrayList de visite
+         */
         public void addAllVisite(ArrayList<Visite> visiteList)
             {
                 for (Visite v : visiteList)
                     addVisite(v);
             }
         
+        /**
+         * Ajoute une visite à la base de donnée et décide s'il doit passer par une insertion ou une mise à jour
+         *
+         * @param v une visite
+         */
         public void addVisite(Visite v)
             {
                 if (isAlreadyInBD(v))
@@ -297,6 +390,12 @@ public class DatabaseTools
                     insertVisite(v);
             }
         
+        /**
+         * Vérifie si la visite existe en Base de Donnée
+         *
+         * @param v une visite
+         * @return retourne vrai si la visite existe en Base de Donnée
+         */
         private boolean isAlreadyInBD(Visite v)
             {
                 if (v.getId() == 0)
@@ -316,6 +415,11 @@ public class DatabaseTools
                 return false;
             }
         
+        /**
+         * Insere un visite dans la Base de Donnée
+         *
+         * @param v un visite
+         */
         private void insertVisite(Visite v)
             {
                 try
@@ -334,6 +438,11 @@ public class DatabaseTools
                     }
             }
         
+        /**
+         * Met à jour un visite de la Base de Donnée
+         *
+         * @param v un visite
+         */
         private void updateVisite(Visite v)
             {
                 try
@@ -357,12 +466,23 @@ public class DatabaseTools
         //endregion
         
         //region Membre
+        
+        /**
+         * Ajoute une liste de membre dans la Base de Donnée
+         *
+         * @param memberList ArrayList de membre
+         */
         public void addAllMember(ArrayList<Member> memberList)
             {
                 for (Member m : memberList)
                     addMember(m);
             }
         
+        /**
+         * Ajoute une membre à la base de donnée et décide s'il doit passer par une insertion ou une mise à jour
+         *
+         * @param m un membre
+         */
         public void addMember(Member m)
             {
                 if (isAlreadyInBD(m))
@@ -371,6 +491,12 @@ public class DatabaseTools
                     insertMember(m);
             }
         
+        /**
+         * Récupère une membre en fonction de son identifiant de Base de Donnée
+         *
+         * @param id identifiant de Base de Donnée
+         * @return retourne un membre
+         */
         public Member getMemberById(int id)
             {
                 try
@@ -413,6 +539,11 @@ public class DatabaseTools
                 return null;
             }
         
+        /**
+         * Récupère tous les membre
+         *
+         * @return retourne un ArrayList de membre
+         */
         private ArrayList<Member> getAllMember()
             {
                 ArrayList<Member> memberList = new ArrayList<>();
@@ -458,6 +589,12 @@ public class DatabaseTools
                 return memberList;
             }
         
+        /**
+         * Vérifie si le membre existe en Base de Donnée
+         *
+         * @param m un membre
+         * @return retourne vrai si le membre existe en Base de Donnée
+         */
         private boolean isAlreadyInBD(Member m)
             {
                 if (m.getId() == 0)
@@ -477,6 +614,11 @@ public class DatabaseTools
                 return false;
             }
         
+        /**
+         * Insere un membre dans la Base de Donnée
+         *
+         * @param m un membre
+         */
         private void insertMember(Member m)
             {
                 try
@@ -518,6 +660,11 @@ public class DatabaseTools
                     }
             }
         
+        /**
+         * Met à jour un membre de la Base de Donnée
+         *
+         * @param m un membre
+         */
         private void updateMember(Member m)
             {
                 try
@@ -555,6 +702,11 @@ public class DatabaseTools
                     }
             }
         
+        /**
+         * Supprime un membre de la Base de Donnée
+         *
+         * @param m un membre
+         */
         public void removeMember(Member m)
             {
                 try
@@ -574,6 +726,12 @@ public class DatabaseTools
         //endregion
         
         //region Association
+        
+        /**
+         * Récupère l'association
+         *
+         * @return retourne l'association
+         */
         public Association getAssociation()
             {
                 Association association;
@@ -624,6 +782,11 @@ public class DatabaseTools
                 return null;
             }
         
+        /**
+         * Met à jour l'association
+         *
+         * @param a l'association
+         */
         private void updateAssociation(Association a)
             {
                 try

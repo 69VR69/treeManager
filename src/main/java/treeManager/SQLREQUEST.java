@@ -1,5 +1,8 @@
 package treeManager;
 
+/**
+ * Classe regroupant les requêtes SQL de l'application
+ */
 public class SQLREQUEST
     {
         // Tree

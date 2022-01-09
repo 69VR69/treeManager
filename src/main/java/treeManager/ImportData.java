@@ -10,10 +10,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Classe qui gère les import depuis un fichier CSV
+ */
 public class ImportData
     {
         private final CsvParser parser;
         
+        /**
+         * Constructeur
+         */
         public ImportData()
             {
                 CsvParserSettings settings = new CsvParserSettings();
@@ -21,12 +27,24 @@ public class ImportData
                 this.parser = new CsvParser(settings);
             }
         
+        /**
+         * Importe les données d'un fichier CSV
+         *
+         * @param path chemin vers le fichier CSV
+         * @return Retourne une liste de tableau représentant le fichier CSV
+         */
         public List<String[]> importCSV(String path)
             {
                 InputStreamReader reader = new InputStreamReader(Objects.requireNonNull(ImportData.class.getResourceAsStream(path)), StandardCharsets.UTF_8);
                 return parser.parseAll(reader);
             }
         
+        /**
+         * Importe les données depuis le fichier CSV et créer les arbres
+         *
+         * @param path chemin vers le fichier CSV
+         * @return Retourne un ArrayList d'arbres
+         */
         public ArrayList<Tree> importCSVAndCreateObject(String path)
             {
                 ArrayList<Tree> treeList = new ArrayList<>();
@@ -39,18 +57,22 @@ public class ImportData
                 return treeList;
             }
         
+        /**
+         * Ajoute tous les arbres du fichier CSV à la Base de Donnée
+         *
+         * @param path chemin vers le fichier CSV
+         * @param db   objet de gestion de la Base de Donnée
+         */
         public void csvToDB(String path, DatabaseTools db)
             {
                 db.addAllTree(importCSVAndCreateObject(path));
             }
         
-        public static void main(String[] args)
-            {
-                DatabaseTools db = new DatabaseTools("127.0.0.1", "root", "");
-                ImportData importData = new ImportData();
-                importData.csvToDB("/data.csv", db);
-            }
-        
+        /**
+         * Permet d'afficher dans la console le contenu du fichier CSV (outil de debugging)
+         *
+         * @param path chemin vers le fichier CSV
+         */
         public void printCSV(String path)
             {
                 for (String[] row : importCSV(path))

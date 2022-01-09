@@ -21,13 +21,14 @@ public class Main {
         System.out.println("1 : Gerer les visites");
         System.out.println("2 : Gerer les arbres");
         System.out.println("3 : Gerer les donations");
-        System.out.println("4 : Payer une facture");
-        System.out.println("5 : Nouvel exercice fiscal");
+        System.out.println("4 : Ajouter mairie");
+        System.out.println("5 : Payer une facture");
+        System.out.println("6 : Nouvel exercice fiscal");
         System.out.println("-1 : Quitter");
 
         System.out.print("> ");
         String input = Entity.lireClavier();
-        while (!isValidInt(input, -1, 5)) {
+        while (!isValidInt(input, -1, 6)) {
             System.out.println("ERROR - Veuillez entrer une valeur correcte : ");
             System.out.print("> ");
             input = Entity.lireClavier();
@@ -58,11 +59,15 @@ public class Main {
                     break;
 
                 case "4":
-                    paiementFacture();
+                    asso.add_donnateurs(new Maire(0));
                     break;
 
                 case "5":
-                    asso.end_year();
+                    paiementFacture();
+                    break;
+
+                case "6":
+                    asso.end_year();   
                     break;
     
                 default:
@@ -77,12 +82,13 @@ public class Main {
                 System.out.println("1 : Gerer les visites");
                 System.out.println("2 : Gerer les arbres");
                 System.out.println("3 : Gerer les donations");
-                System.out.println("4 : Payer une facture");
-                System.out.println("5 : Nouvel exercice fiscal");
+                System.out.println("4 : Ajouter mairie");
+                System.out.println("5 : Payer une facture");
+                System.out.println("6 : Nouvel exercice fiscal");
                 System.out.println("-1 : Quitter");
                 System.out.print("> ");
                 input = Entity.lireClavier();
-                while (!isValidInt(input, -1, 5)) {
+                while (!isValidInt(input, -1, 6)) {
                     System.out.println("ERROR - Veuillez entrer une valeur correcte : ");
                     System.out.print("> ");
                     input = Entity.lireClavier();
@@ -102,11 +108,12 @@ public class Main {
         System.out.println("0 : Nouveau membre");
         System.out.println("1 : Supprimer un membre");
         System.out.println("2 : Payer la cotisation d'un membre");
+        System.out.println("3 : Ajouter un president");
         System.out.println("-1 : Retour au menu principal");
 
         System.out.print("> ");
         String input = Entity.lireClavier();
-        while (!isValidInt(input, -1, 2)) {
+        while (!isValidInt(input, -1, 3)) {
             System.out.println("ERROR - Veuillez entrer une valeur correcte : ");
             System.out.print("> ");
             input = Entity.lireClavier();
@@ -133,7 +140,6 @@ public class Main {
                     String memberID = Entity.lireClavier();
                     while (!isValidInt(memberID)) {
                         System.out.println("ERROR - Veuillez entrer une valeur correcte : ");
-                        System.out.print("> ");
                         memberID = Entity.lireClavier();
                     }
 
@@ -156,6 +162,12 @@ public class Main {
                     asso.pay_cotisation(new Member(Entity.lireClavier()));;
                     System.out.println();
                     break;
+
+                case "3":
+                    System.out.print("Enter the name of the president :");
+                    String presidentName = Entity.lireClavier();
+                    asso.add_member(new President(presidentName));
+                    break;
             } 
             
             if (!exitMembres) {
@@ -164,12 +176,14 @@ public class Main {
                 System.out.println("0 : Nouveau membre");
                 System.out.println("1 : Supprimer un membre");
                 System.out.println("2 : Payer la cotisation d'un membre");
+                System.out.println("3 : Ajouter un president");
                 System.out.println("-1 : Retour au menu principal");
 
                 System.out.print("> ");
                 input = Entity.lireClavier();
-                while (!isValidInt(input, -1, 2)) {
+                while (!isValidInt(input, -1, 3)) {
                     System.out.println("ERROR - Veuillez entrer une valeur correcte : ");
+                    System.out.print("> ");
                     input = Entity.lireClavier();
                 }
             }
@@ -189,7 +203,6 @@ public class Main {
         String input = Entity.lireClavier();
         while (!isValidInt(input, -1, 1)) {
             System.out.println("ERROR - Veuillez entrer une valeur correcte : ");
-            System.out.print("> ");
             input = Entity.lireClavier();
         }
 
@@ -264,9 +277,11 @@ public class Main {
                 System.out.println("1 : Finir une visite");
                 System.out.println("-1 : Retour au menu principal");
     
+                System.out.print("> ");
                 input = Entity.lireClavier();
                 while (!isValidInt(input, -1, 1)) {
                     System.out.println("ERROR - Veuillez entrer une valeur correcte : ");
+                    System.out.print("> ");
                     input = Entity.lireClavier();
                 }
             }
@@ -283,6 +298,7 @@ public class Main {
         System.out.println("1 : Voter pour un arbre");
         System.out.println("2 : Nominer un arbre");
         System.out.println("-1 : Retour au menu principal");
+        System.out.print("> ");
 
         String input = Entity.lireClavier();
         while (!isValidInt(input, -1, 2)) {
@@ -315,7 +331,7 @@ public class Main {
                         System.out.println("ERROR - Hauteur invalide :");
                         tmp = Entity.lireClavier();
                     }
-                    int hauteur = Integer.parseInt(Entity.lireClavier());
+                    int hauteur = Integer.parseInt(tmp);
 
                     System.out.println();
                     System.out.print("Epaisseur : ");
@@ -324,7 +340,7 @@ public class Main {
                         System.out.println("ERROR - Epaisseur invalide :");
                         tmp = Entity.lireClavier();
                     }
-                    int epaisseur = Integer.parseInt(Entity.lireClavier());
+                    int epaisseur = Integer.parseInt(tmp);
 
                     System.out.println();
                     System.out.print("Espece : ");
@@ -416,10 +432,12 @@ public class Main {
                 System.out.println("1 : Voter pour un arbre");
                 System.out.println("2 : Nominer un arbre");
                 System.out.println("-1 : Retour au menu principal");
+                System.out.print("> ");
     
                 input = Entity.lireClavier();
                 while (!isValidInt(input, -1, 2)) {
                     System.out.println("ERROR - Veuillez entrer une valeur correcte : ");
+                    System.out.print("> ");
                     input = Entity.lireClavier();
                 }
             }
@@ -437,7 +455,7 @@ public class Main {
         System.out.println("1 : Ajouter un nouveau donateur");
         System.out.println("2 : Recevoir une donation");
         System.out.println("-1 : Retour au menu principal");
-
+        System.out.print("> ");
         String input = Entity.lireClavier();
         while (!isValidInt(input, -1, 2)) {
             // Checks input (int included in [-1, 1])
@@ -490,10 +508,11 @@ public class Main {
                 System.out.println("1 : Ajouter un nouveau donateur");
                 System.out.println("2 : Recevoir une donation");
                 System.out.println("-1 : Retour au menu principal");
-    
+                System.out.print("> ");
                 input = Entity.lireClavier();
                 while (!isValidInt(input, -1, 2)) {
                     System.out.println("ERROR - Veuillez entrer une valeur correcte : ");
+                    System.out.print("> ");
                     input = Entity.lireClavier();
                 }
             }
@@ -508,7 +527,6 @@ public class Main {
         String facture = Entity.lireClavier();
         while (!isValidInt(facture)) {
             System.out.println("ERROR - Montant invalide :");
-            System.out.print(">");
             facture = Entity.lireClavier();
         }
         asso.do_facture(Integer.parseInt(facture));
@@ -516,6 +534,7 @@ public class Main {
         System.out.println("Solde après paiement : " + asso.getSolde());
         System.out.println();
     }
+    
     /**
      * Checks if given string is an integer
      * @param input

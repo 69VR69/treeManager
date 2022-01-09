@@ -17,21 +17,6 @@ public class President extends Member {
         return (new Member(nom));
     }
 
-    /**
-     * DEPRECATED - Delete a member from the Association
-     */
-    public void desinscrire() {
-        // useless ? La suppression du Membre se fait côté Association
-        /*
-         * for (Member m : asso.getMembres()) {
-         * String paye = m.hasPayed() ? "A payé" : "";
-         * System.out.println(m.getNom() + paye); // pour aider à la suppression, liste
-         * les (non-)payeurs
-         * }
-         */
-        System.out.println("WARN - President.desinscrire() non implementee");
-    }
-
     // --- Constructeurs ---
 
     /**
@@ -43,6 +28,15 @@ public class President extends Member {
         super(nom);
     }
     
+    /**
+     * Complete president constructor
+     * @param id ID
+     * @param nom Name
+     * @param hasPayed Boolean
+     * @param proposedTrees ArrayList of trees
+     * @param visites ArrayList of visits
+     * @param nbVisites Number of visits
+     */
     public President(int id, String nom, boolean hasPayed, ArrayList<Tree> proposedTrees, ArrayList<Visite> visites, int nbVisites)
         {
             super(id, nom, hasPayed, proposedTrees, visites, nbVisites);

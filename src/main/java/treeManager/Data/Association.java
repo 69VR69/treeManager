@@ -150,7 +150,7 @@ public class Association {
      * @return le booleen true si elle peux se permettre la depense, false sinon
      */
     private boolean can_pay(int m) {
-        return ((solde = +m) > 0);
+        return ((solde =- m) > 0);
     }
 
 
@@ -285,7 +285,7 @@ public class Association {
         }
 
         if (mairie==null){
-            System.out.println("Aucunu Mairie n'a été renseignez. Le bilan fiscale n'a pas été réaliser. Veuillez en renseigner une");
+            System.out.println("Aucune Mairie n'a été renseignée. Le bilan fiscal n'a pas été réalisé. Veuillez en renseigner une");
             return;
         }
 

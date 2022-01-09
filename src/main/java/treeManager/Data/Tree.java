@@ -21,11 +21,8 @@ public class Tree
         private String adresse;
         private String complement;
         
-        private ArrayList<Visite> visites; //TODO : in bd link it as relational BD
-        //array de rapports de visite "comtpe rendu"
         
-        
-        public Tree(int id, String nomfr, String age, int hauteur, int epaisseur, String espece, String genre, boolean remarquable, String emplacement, int nb_votes, String domaine, String arrondissement, String adresse, String complement, ArrayList<Visite> visites)
+        public Tree(int id, String nomfr, String age, int hauteur, int epaisseur, String espece, String genre, boolean remarquable, String emplacement, int nb_votes, String domaine, String arrondissement, String adresse, String complement)
             {
                 this.id = id;
                 this.nomfr = nomfr;
@@ -41,7 +38,6 @@ public class Tree
                 this.arrondissement = arrondissement;
                 this.adresse = adresse;
                 this.complement = complement;
-                this.visites = visites;
             }
         
         public int getNb_votes()
@@ -184,31 +180,9 @@ public class Tree
                 this.complement = complement;
             }
         
-        public ArrayList<Visite> getVisites()
-            {
-                return visites;
-            }
-        
-        public void setVisites(ArrayList<Visite> visites)
-            {
-                this.visites = visites;
-            }
-        
         @Override public String toString()
             {
                 return "Tree{" + "remarquable=" + remarquable + ", age='" + age + '\'' + ", hauteur (m)=" + hauteur + ", epaisseur (cm)=" + epaisseur + ", nom francais='" + nomfr + '\'' + ", genre='" + genre + '\'' + ", espece='" + espece + '\'' + ", emplacement=" + emplacement + ", adresse='" + adresse + '\'' + ", arrondissement='" + arrondissement + '\'' + ", domaine='" + domaine + '\'' + "}\n";
             }
-        
-        
-        Tree()
-            {
-                visites = new ArrayList<Visite>();
-            }
-        
-        public void add_visite(Visite v)
-            {
-                visites.add(v);
-            }
-        
         
     }

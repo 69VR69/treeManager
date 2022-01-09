@@ -11,19 +11,20 @@ public class Visite
         private String rapport;
         private Tree tree;
         
-        public Visite(Member member, Date date)
+        public Visite( Date date, Tree tree)
             {
                 this.id = 0;
                 this.date = date;
+                this.tree=tree;
                 this.rapport = "";
             }
         
-        public Visite(int id, Date date, String rapport, Member member)
+        public Visite(int id, Date date, String rapport,Tree tree)
             {
                 this.id = id;
                 this.date = date;
+                this.tree=tree;
                 this.rapport = rapport;
-                this.member = member;
             }
         
         public Visite()
@@ -56,18 +57,20 @@ public class Visite
                 return rapport;
             }
         
-        public void setRapport(String rapport)
-            {
-                this.rapport = rapport;
-            }
-    
-        public Member getMember()
-            {
-                return member;
-            }
-    
+        public void setRapport(String rapport) {
+            this.rapport = rapport;
+        }
+
+        public Tree getTree() {
+            return tree;
+        }
+
+        public void setTree(Tree tree) {
+            this.tree = tree;
+        }
+
         @Override public String toString()
             {
-                return "Visite{" + "date=" + date + ", rapport='" + rapport + '\'' + '}';
+                return "Visite{" + "date=" + date + ", rapport='" + rapport +", tree='" + tree + '\'' + '}';
             }
     }

@@ -168,6 +168,7 @@ public class Main {
                     break;
     
                 case "0":
+                    asso.print_trees();
                     System.out.print("ID de l'arbre visite : ");
                     String tmp_id_tree = Entity.lireClavier();
                     while (!isValidInt(tmp_id_tree)) {
@@ -177,6 +178,7 @@ public class Main {
                     /*Tree treeVisite = db.getTreeById(Integer.parseInt(tmpVisite));
                     Visite v = new Visite(new Date(), treeVisite); // TODO proper ask for date of visit*/
 
+                    asso.print_members();
                     System.out.print("ID du memmbre qui fera la visite : ");
                     String tmp_id_member = Entity.lireClavier();
                     while (!isValidInt(tmp_id_member)) {

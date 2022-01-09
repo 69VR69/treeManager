@@ -1,5 +1,6 @@
 package treeManager.Data;
 
+import treeManager.DatabaseTools;
 import treeManager.Entity.Externe;
 import treeManager.Entity.Maire;
 import treeManager.Entity.Member;
@@ -63,6 +64,8 @@ public class Association {
      * la liste de tout les arbres gerer par l'associations
      */
     private ArrayList<Tree> trees;
+
+    private DatabaseTools dbt;
     //endregion
 
     //region builder
@@ -222,7 +225,7 @@ public class Association {
      */
     public void do_facture(int m) {
         if (!can_pay(m)) {
-            //TODO warn user not enough money, invoice not paid
+            System.out.println("L'association n'a pas assez de fond, la facture n'a pas été payée");
             return;
         }
         pay_facture(m);
@@ -282,14 +285,14 @@ public class Association {
         }
 
         if (mairie==null){
-            //TODO warn user error during execution end year report was not done because their is no mayor to validate a tree
+            System.out.println("Aucunu Mairie n'a été renseignez. Le bilan fiscale n'a pas été réaliser. Veuillez en renseigner une");
             return;
         }
 
 
         ban();
         reset_money();
-        reset_member_payment();
+        reset_member();
         ArrayList<Tree> trees5 = top5tree();
         Tree the_choosen_one = mairie.nominate(trees5);
         make_tree_remarkable(the_choosen_one);
@@ -302,7 +305,7 @@ public class Association {
      *
      * @return un String du bilan fiscale
      */
-    private String generateRapport() {
+    public String generateRapport() {
         String report = "--- RAPPORT ---\n" + "--- Dépenses --- \n " + "Total Factures : " + this.facture + "\n" + " Total Visites : " + this.defreiment + "\n" + "--- Revenus ---\n" + "Total Factures : " + this.facture + "\n" + " Total Visites : " + this.defreiment + "\n" + "--- Solde ---\n" + "Solde : " + this.solde + "\n";
 
         return report;
@@ -316,12 +319,13 @@ public class Association {
     //reset le payment des membres
 
     /**
-     * iterate over every member and reset their payemetn status
+     * iterate over every member and reset their payemetn status and visite number
      */
-    private void reset_member_payment() {
+    private void reset_member() {
 
         for(int i = 0; i<members.size();i++){
-            members.get(i).unpayCotisation();
+            members.get(i).unpayCotisation();//reset payemeent
+            members.get(i).setVisites(0);//reset visit number
         }
 
     }
@@ -348,7 +352,6 @@ public class Association {
                 return;
             }
         }
-        //TODO warn user of the execution;
     }
 
     /**
@@ -358,8 +361,9 @@ public class Association {
      * @param m le membre a supprimer
      */
     public void desinscrire(int index, Member m) {
-        m.deleteMember();//clean BD
+        m.deleteMember(dbt);//clean BD
         members.remove(index); //remove from member list
+        System.out.println("Un membre a quiter l'association");
     }
 
 
@@ -373,7 +377,6 @@ public class Association {
                 desinscrire(i, members.get(i));
             }
         }
-        //TODO warn user of ban?
     }
 
     //endregion
@@ -397,9 +400,7 @@ public class Association {
      * @return la liste des 5 arbres
      */
     private ArrayList<Tree> top5tree() {
-        //TODO do sql request
-        String request = "select top(5) from tree where remarquable = 'false' order by num_votes,thickness,height";
-        return null;
+        return  dbt.getFiveTreeByVote();
     }
     //endregion
 
@@ -416,8 +417,7 @@ public class Association {
      */
     public void ask_visite(Tree t, Member member, Date date) {
         if (!can_pay(montant_remboursement)) {
-            //TODO warn, currently not enough money
-            //cancel visit creation
+            System.out.println("l'association n'a pas assez d'argent pour rembourser la visite. La visite n'est pas creer");
             return;
         }
 
@@ -427,7 +427,7 @@ public class Association {
                 ArrayList<Visite> member_visite = members.get(i).get_visites();
                 for (int j = 0; j < member_visite.size(); j++) {
                     if (member_visite.get(j).getDate() == v.getDate() && member_visite.get(j).getTree() == v.getTree()) {
-                        //TODO warn the user a visit is already on the same tree visit was not accepted
+                        System.out.println("Une visite par un autre membre est deja reserver pour cette arbre au meme jour");
                         return;
 
                     }
@@ -438,7 +438,7 @@ public class Association {
             member.add_visite(v);
             member.incVisites();
         } else {
-            //TODO warn user : member cant more do visit and visit not creeated
+            System.out.println("Vous avez deja réaliser le nombre maximum de visite pour cette exercice fiscale");
         }
     }
 
@@ -463,7 +463,7 @@ public class Association {
      */
     public void do_visite(Visite v, String report) {
         if (!can_pay(montant_remboursement)) {
-            //TODO warn user not enough money, report not validate
+            System.out.println("L'association ne peux pas vous payer. Le rapport n'est pas sauvegarder. Il faut de l'argent dans les caisse");
             return;
         }
         pay_visite();
@@ -529,6 +529,10 @@ public class Association {
 
     public int getDefreiment() {
         return defreiment;
+    }
+
+    public void set_dbt(DatabaseTools dbt){
+        this.dbt=dbt;
     }
 
     //endregion

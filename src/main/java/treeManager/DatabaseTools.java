@@ -535,7 +535,7 @@ public class DatabaseTools
                     }
             }
         
-        private void removeMember(Member m)
+        public void removeMember(Member m)
             {
                 try
                     {

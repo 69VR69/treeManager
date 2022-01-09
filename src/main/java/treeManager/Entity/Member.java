@@ -2,6 +2,7 @@ package treeManager.Entity;
 
 import treeManager.Data.Tree;
 import treeManager.Data.Visite;
+import treeManager.DatabaseTools;
 
 import java.util.ArrayList;
 
@@ -142,6 +143,10 @@ public class Member implements Entity {
         this.nbVisites++;
     }
 
+    public void setVisites(int i){
+        this.nbVisites=i;
+    }
+
     // --- Fonctions membres ---
 
     /**
@@ -184,8 +189,9 @@ public class Member implements Entity {
         }
     }
 
-    public void deleteMember() {
+    public void deleteMember(DatabaseTools dbt) {
         // TODO delete the memeber information from the BD (to be RGPD compliant)
+        dbt.removeMember(this);
     }
 
      /*

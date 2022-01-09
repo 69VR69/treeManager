@@ -71,7 +71,7 @@ public class Association {
      * contructeur vide on estime que le solde est a 0 (appel le constructeur avec le sold)
      */
     public Association() {
-        new Association(0 );
+        this(0);
     }
 
     /**
@@ -79,7 +79,7 @@ public class Association {
      * @param solde le sold initial de l'association
      */
     public Association(int solde) {
-        new Association(solde, 5, 15, 5);
+        this(solde, 5, 15, 5);
     }
 
     /**
@@ -101,9 +101,9 @@ public class Association {
         this.facture = 0;
         this.defreiment = 0;
 
-        this.members = new ArrayList<>();
-        this.donnateurs = new ArrayList<>();
-        this.trees = new ArrayList<>();
+        this.members = new ArrayList<Member>();
+        this.donnateurs = new ArrayList<Externe>();
+        this.trees = new ArrayList<Tree>();
 
     }
 

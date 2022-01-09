@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : dim. 09 jan. 2022 à 11:40
+-- Généré le : dim. 09 jan. 2022 à 17:08
 -- Version du serveur : 10.4.13-MariaDB
 -- Version de PHP : 7.4.9
 
@@ -86,18 +86,6 @@ CREATE TABLE IF NOT EXISTS `association_tree` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `externe`
---
-
-DROP TABLE IF EXISTS `externe`;
-CREATE TABLE IF NOT EXISTS `externe` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
 -- Structure de la table `member_tree`
 --
 
@@ -124,6 +112,18 @@ CREATE TABLE IF NOT EXISTS `membre` (
   `is_president` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `membre_visite`
+--
+
+DROP TABLE IF EXISTS `membre_visite`;
+CREATE TABLE IF NOT EXISTS `membre_visite` (
+  `id_membre` int(11) NOT NULL,
+  `id_visite` int(11) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -173,7 +173,6 @@ CREATE TABLE IF NOT EXISTS `visite` (
 -- Contraintes pour la table `association_externe`
 --
 ALTER TABLE `association_externe`
-  ADD CONSTRAINT `association_externe_ibfk_1` FOREIGN KEY (`id_externe`) REFERENCES `externe` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `association_externe_ibfk_2` FOREIGN KEY (`id_association`) REFERENCES `association` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --

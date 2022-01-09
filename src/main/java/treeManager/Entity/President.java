@@ -1,6 +1,7 @@
 package treeManager.Entity;
 
 import treeManager.Data.Tree;
+import treeManager.Data.Visite;
 
 import java.util.ArrayList;
 
@@ -41,8 +42,9 @@ public class President extends Member {
     public President(String nom) {
         super(nom);
     }
-
-    public President(int id, String nom, int nbVisites, boolean hasPayed, ArrayList<Tree> proposedTrees) {
-        super(id, nom, nbVisites, hasPayed, proposedTrees);
-    }
+    
+    public President(int id, String nom, boolean hasPayed, ArrayList<Tree> proposedTrees, ArrayList<Visite> visites, int nbVisites)
+        {
+            super(id, nom, hasPayed, proposedTrees, visites, nbVisites);
+        }
 }

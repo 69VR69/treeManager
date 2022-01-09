@@ -202,21 +202,24 @@ public class Member implements Entity {
         this.nom = nom;
         this.nbVisites = 0;
     }
-
+    
     /**
      * Member constructor
-     * 
+     *
      * @param id
      * @param nom
-     * @param nbVisites
      * @param hasPayed
      * @param proposedTrees
+     * @param visites
+     * @param nbVisites
      */
-    public Member(int id, String nom, int nbVisites, boolean hasPayed, ArrayList<Tree> proposedTrees) {
-        this.id = 0;
-        this.hasPayed = false;
-        this.proposedTrees = new ArrayList<Tree>();
-        this.nom = nom;
-        this.nbVisites = 0;
-    }
+    public Member(int id, String nom, boolean hasPayed, ArrayList<Tree> proposedTrees, ArrayList<Visite> visites, int nbVisites)
+        {
+            this.id = id;
+            this.nom = nom;
+            this.hasPayed = hasPayed;
+            this.proposedTrees = proposedTrees;
+            this.visites = visites;
+            this.nbVisites = nbVisites;
+        }
 }

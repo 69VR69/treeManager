@@ -35,14 +35,17 @@ public class Association {
      * somme des cotisations (pour l'exercice fiscale)
      */
     private int cotisations; //somme des cotisation
+    
     /**
      * somme des dons (pour l'exercice fiscale)
      */
     private int dons; //somme des dons
+    
     /**
      * somme des factures (pour l'exercice fiscale)
      */
     private int facture; //somme des facture
+    
     /**
      * somme des defreiment de visites (pour l'exercice fiscale)
      */
@@ -98,9 +101,9 @@ public class Association {
         this.facture = 0;
         this.defreiment = 0;
 
-        this.members = new ArrayList<Member>();
-        this.donnateurs = new ArrayList<Externe>();
-        this.trees = new ArrayList<Tree>();
+        this.members = new ArrayList<>();
+        this.donnateurs = new ArrayList<>();
+        this.trees = new ArrayList<>();
 
     }
 
@@ -119,6 +122,7 @@ public class Association {
      * @param donnateurs la liste liste de tout les donnateur de l'association
      * @param trees la liste de tout les arbre gerer par l'association
      */
+    
     public Association(int nb_max_visite, int montant_remboursement, int montant_cotise, int solde, int cotisations, int dons, int facture, int defreiment, ArrayList<Member> members, ArrayList<Externe> donnateurs, ArrayList<Tree> trees) {
         this.nb_max_visite = nb_max_visite;
         this.montant_remboursement = montant_remboursement;

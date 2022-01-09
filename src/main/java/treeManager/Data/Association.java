@@ -24,15 +24,15 @@ public class Association {
     private ArrayList<Tree> trees;
 
     //region builder
-    Association() {
+    public Association() {
         new Association(0, 5, 15, 5);
     }
 
-    Association(int solde) {
+    public Association(int solde) {
         new Association(solde, 5, 15, 5);
     }
 
-    Association(int solde, int nb_max_visite, int montant_cotise, int montant_remboursement) {
+    public Association(int solde, int nb_max_visite, int montant_cotise, int montant_remboursement) {
         this.solde = solde;
         this.nb_max_visite = nb_max_visite;
         this.montant_cotise = montant_cotise;

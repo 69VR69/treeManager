@@ -24,6 +24,9 @@ public class Member implements Entity {
      */
     private ArrayList<Tree> proposedTrees;
 
+    /**
+     * Visits done by the member
+     */
     private ArrayList<Visite> visites;
 
     /**
@@ -42,7 +45,7 @@ public class Member implements Entity {
 
     /**
      * Sets the id of the member
-     *
+     * 
      * @param id
      */
     public void setId(int id) {
@@ -117,34 +120,46 @@ public class Member implements Entity {
      */
     public void payCotisation() {
         if (!hasPayed) {
-            hasPayed = false;
-            // TODO gérer le paiement côté assoc (et penser à appeler cette fonction à ce moment!)
+            hasPayed = true;
+            // TODO gérer le paiement côté assoc (et penser à appeler cette fonction à ce
+            // moment!)
         } else {
-            System.out.println("Paiement réalisé !"); // DEBUG
+            System.out.println("Paiement déjà réalisé !");
         }
     }
 
+    /**
+     * Unpay the cotisation of the member
+     */
+    public void unpayCotisation() {
+        if (hasPayed) {
+            hasPayed = false;
+            // TODO gérer le paiement côté assoc (et penser à appeler cette fonction à ce
+            // moment!)
+        }
+    }
 
     /**
      * Add a Tree to member's proposed trees list
      */
     public void proposeTree(Tree t) {
-            /* TODO
-            Si on atteint les 5, proposer d'en remplacer un par le 6ème choisi (ou pas)
-            */
+        /*
+         * TODO
+         * Si on atteint les 5, proposer d'en remplacer un par le 6ème choisi (ou pas)
+         */
         if (proposedTrees.size() > 5) {
-            System.out.println("You already proposed " + proposedTrees.size() + "trees. Please select one to delete: (NOT IMPLEMENTED YET)");
+            System.out.println("You already proposed " + proposedTrees.size()
+                    + "trees. Please select one to delete: (NOT IMPLEMENTED YET)");
         } else {
             proposedTrees.add(t);
         }
     }
 
-
     public void deleteMember() {
-        //TODO delete the memeber information from the BD (to be RGPD compliant)
+        // TODO delete the memeber information from the BD (to be RGPD compliant)
     }
 
-        /*
+     /*
         // DEPRECATED (mais mis de côté au cas où : du code pour choisir l'arbre à entrer)
         public void proposeTree() {
             //proposer 5 arbre to association
@@ -175,10 +190,9 @@ public class Member implements Entity {
         */
 
     // --- Constructeurs ---
-
     /**
      * Simple member constructor
-     *
+     * 
      * @param nom
      */
     public Member(String nom) {
@@ -191,7 +205,7 @@ public class Member implements Entity {
 
     /**
      * Member constructor
-     *
+     * 
      * @param id
      * @param nom
      * @param nbVisites
@@ -206,4 +220,3 @@ public class Member implements Entity {
         this.nbVisites = 0;
     }
 }
-;

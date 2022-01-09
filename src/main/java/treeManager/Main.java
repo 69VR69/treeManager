@@ -3,7 +3,6 @@ package treeManager;
 import treeManager.Entity.*;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 import treeManager.Data.*;
 
@@ -17,23 +16,25 @@ public class Main {
 
         // TODO peupler l'asso avec le pouvoir de la DB (AFO, c'est à toi-)
 
-        System.out.println("ACCUEIL");
+        System.out.println("=== ACCUEIL ===");
         System.out.println("0 : Gerer les membres");
         System.out.println("1 : Gerer les visites");
         System.out.println("2 : Gerer les arbres");
-        System.out.println("3 : Nouvel exercice fiscal");
+        System.out.println("3 : Gerer les donations");
+        System.out.println("4 : Payer une facture");
+        System.out.println("5 : Nouvel exercice fiscal");
         System.out.println("-1 : Quitter");
 
         System.out.print("> ");
         String input = Entity.lireClavier();
-        while (!isValidInt(input, -1, 2)) {
+        while (!isValidInt(input, -1, 5)) {
             System.out.println("ERROR - Veuillez entrer une valeur correcte : ");
             System.out.print("> ");
             input = Entity.lireClavier();
         }
 
         boolean exit = (input == "-1" ? true : false);
-        System.out.println("exit = " + exit);
+
         while (!exit) {
             switch (input) {    
                 case "-1":
@@ -53,6 +54,14 @@ public class Main {
                     break;
 
                 case "3":
+                    gestionDonations();
+                    break;
+
+                case "4":
+                    paiementFacture();
+                    break;
+
+                case "5":
                     asso.end_year();
                     break;
     
@@ -62,14 +71,18 @@ public class Main {
             }
 
             if (!exit) {
+                System.out.println();
+                System.out.println("=== ACCUEIL ===");
                 System.out.println("0 : Gerer les membres");
                 System.out.println("1 : Gerer les visites");
                 System.out.println("2 : Gerer les arbres");
-                System.out.println("3 : Reset cotisation (nouvel exercice fiscal)");
+                System.out.println("3 : Gerer les donations");
+                System.out.println("4 : Payer une facture");
+                System.out.println("5 : Nouvel exercice fiscal");
                 System.out.println("-1 : Quitter");
                 System.out.print("> ");
                 input = Entity.lireClavier();
-                while (!isValidInt(input, -1, 2)) {
+                while (!isValidInt(input, -1, 5)) {
                     System.out.println("ERROR - Veuillez entrer une valeur correcte : ");
                     System.out.print("> ");
                     input = Entity.lireClavier();
@@ -84,7 +97,8 @@ public class Main {
      * Command line interaction for anything member related
      */
     public static void gestionMembres() {
-        System.out.println("MEMBRES");
+        System.out.println();
+        System.out.println("=== MEMBRES ===");
         System.out.println("0 : Nouveau membre");
         System.out.println("1 : Supprimer un membre");
         System.out.println("2 : Payer la cotisation d'un membre");
@@ -93,7 +107,6 @@ public class Main {
         System.out.print("> ");
         String input = Entity.lireClavier();
         while (!isValidInt(input, -1, 2)) {
-            // Checks input (int included in [-1, 2])
             System.out.println("ERROR - Veuillez entrer une valeur correcte : ");
             System.out.print("> ");
             input = Entity.lireClavier();
@@ -113,12 +126,32 @@ public class Main {
                     break;
     
                 case "1":
-                    System.out.print("Nom du membre à supprimer : ");
-                    asso.desinscrire(new Member(Entity.lireClavier()));
+                    System.out.print("Membres actuels: ");
+                    asso.print_members();
+                    System.out.println();
+                    System.out.print("ID du membre à supprimer : ");
+                    String memberID = Entity.lireClavier();
+                    while (!isValidInt(memberID)) {
+                        System.out.println("ERROR - Veuillez entrer une valeur correcte : ");
+                        System.out.print("> ");
+                        memberID = Entity.lireClavier();
+                    }
+
+                    Member m = asso.get_member_by_id(Integer.parseInt(memberID));
+                    if (m != null) {
+                        asso.desinscrire(m);
+                    } else {
+                        System.out.println("ERROR - Utilisateur non trouve");
+                    }
+                    
                     System.out.println();
                     break;
     
                 case "2":
+                    System.out.print("Membres actuels: ");
+                    asso.print_members();
+                    System.out.println();
+
                     System.out.print("Nom du membre qui a payé sa cotisation : ");
                     asso.pay_cotisation(new Member(Entity.lireClavier()));;
                     System.out.println();
@@ -127,6 +160,7 @@ public class Main {
             
             if (!exitMembres) {
                 System.out.println();
+                System.out.println("=== MEMBRES ===");
                 System.out.println("0 : Nouveau membre");
                 System.out.println("1 : Supprimer un membre");
                 System.out.println("2 : Payer la cotisation d'un membre");
@@ -146,14 +180,14 @@ public class Main {
      * Command line interaction for anything visit related
      */
     public static void gestionVisites() {
-        System.out.println("VISITES");
+        System.out.println();
+        System.out.println("=== VISITES ===");
         System.out.println("0 : Nouvelle visite");
         System.out.println("1 : Finir une visite");
         System.out.println("-1 : Retour au menu principal");
 
         String input = Entity.lireClavier();
-        while (!isValidInt(input, -1, 0)) {
-            // Checks input (int included in [-1, 1])
+        while (!isValidInt(input, -1, 1)) {
             System.out.println("ERROR - Veuillez entrer une valeur correcte : ");
             System.out.print("> ");
             input = Entity.lireClavier();
@@ -175,11 +209,9 @@ public class Main {
                         System.out.println("ERROR - Veuillez entrer une valeur correcte : ");
                         tmp_id_tree = Entity.lireClavier();
                     }
-                    /*Tree treeVisite = db.getTreeById(Integer.parseInt(tmpVisite));
-                    Visite v = new Visite(new Date(), treeVisite); // TODO proper ask for date of visit*/
 
                     asso.print_members();
-                    System.out.print("ID du memmbre qui fera la visite : ");
+                    System.out.print("ID du membre qui fera la visite : ");
                     String tmp_id_member = Entity.lireClavier();
                     while (!isValidInt(tmp_id_member)) {
                         System.out.println("ERROR - Veuillez entrer une valeur correcte : ");
@@ -187,7 +219,10 @@ public class Main {
                     }
                     ;
 
-                    asso.ask_visite(asso.get_tree_by_id( Integer.parseInt(tmp_id_tree)),asso.get_member_by_id(Integer.parseInt(tmp_id_member)));
+                    asso.ask_visite(
+                        asso.get_tree_by_id( Integer.parseInt(tmp_id_tree)),
+                        asso.get_member_by_id(Integer.parseInt(tmp_id_member))
+                    );
 
                     System.out.println();
                     break;
@@ -196,7 +231,7 @@ public class Main {
                     System.out.print("Entrer le rapport : ");
                     String reportVisite = Entity.lireClavier();
 
-                    System.out.print("ID du memmbre qui fera la visite : ");
+                    System.out.print("ID du membre qui a fait la visite : ");
                     String tmp_id_member_2 = Entity.lireClavier();
                     while (!isValidInt(tmp_id_member_2) || asso.get_member_size()>Integer.parseInt(tmp_id_member_2)) {
                         System.out.println("ERROR - Veuillez entrer une valeur correcte : ");
@@ -204,16 +239,14 @@ public class Main {
                     }
                     ;
                     Member m = asso.get_member_by_id(Integer.parseInt(tmp_id_member_2));
-                    m.get_visites(); //TODO Print visite
+                    m.printVisites();
 
-                    System.out.print("ID du memmbre qui fera la visite : ");
+                    System.out.print("ID de la visite : ");
                     String tmp_id_visit= Entity.lireClavier();
                     while (!isValidInt(tmp_id_visit)) {
                         System.out.println("ERROR - Veuillez entrer une valeur correcte : ");
                         tmp_id_visit = Entity.lireClavier();
                     }
-                    ;
-
 
                     asso.do_visite(m.get_visites().get(Integer.parseInt((tmp_id_visit))), reportVisite);
                     System.out.println();
@@ -226,12 +259,13 @@ public class Main {
             
             if (!exitVisites) {
                 System.out.println();
+                System.out.println("=== VISITES ===");
                 System.out.println("0 : Nouvelle visite");
                 System.out.println("1 : Finir une visite");
                 System.out.println("-1 : Retour au menu principal");
     
                 input = Entity.lireClavier();
-                while (!isValidInt(input, -1, 0)) {
+                while (!isValidInt(input, -1, 1)) {
                     System.out.println("ERROR - Veuillez entrer une valeur correcte : ");
                     input = Entity.lireClavier();
                 }
@@ -243,7 +277,8 @@ public class Main {
      * Command line interaction for anything tree related
      */
     public static void gestionArbres() {
-        System.out.println("ARBRES");
+        System.out.println();
+        System.out.println("=== ARBRES ===");
         System.out.println("0 : Nouvel arbre");
         System.out.println("1 : Voter pour un arbre");
         System.out.println("2 : Nominer un arbre");
@@ -251,7 +286,6 @@ public class Main {
 
         String input = Entity.lireClavier();
         while (!isValidInt(input, -1, 2)) {
-            // Checks input (int included in [-1, 1])
             System.out.println("ERROR - Veuillez entrer une valeur correcte : ");
             System.out.print("> ");
             input = Entity.lireClavier();
@@ -337,7 +371,7 @@ public class Main {
                         System.out.println("ERROR - ID invalide :");
                         idMembre = Entity.lireClavier();
                     }
-                    Member memberVote = db.getMemberById(Integer.parseInt(idMembre));
+                    Member memberVote = asso.get_member_by_id(Integer.parseInt(idMembre));
                     System.out.println("Votes realises: " + memberVote.getProposedTrees().size());
                     if (memberVote.getProposedTrees().size() == 5) {
                         System.out.println("Vous avez deja vote pour cinq arbres.");
@@ -377,6 +411,7 @@ public class Main {
             
             if (!exitArbres) {
                 System.out.println();
+                System.out.println("=== ARBRES ===");
                 System.out.println("0 : Nouvel arbre");
                 System.out.println("1 : Voter pour un arbre");
                 System.out.println("2 : Nominer un arbre");
@@ -392,9 +427,99 @@ public class Main {
     }
 
     /**
+     * Command line interaction for anything donations related
+     */
+    public static void gestionDonations() {
+        // ajouter un donateur, demander donations, recevoir donation
+        System.out.println();
+        System.out.println("=== DONATIONS ===");
+        System.out.println("0 : Demander des donations");
+        System.out.println("1 : Ajouter un nouveau donateur");
+        System.out.println("2 : Recevoir une donation");
+        System.out.println("-1 : Retour au menu principal");
+
+        String input = Entity.lireClavier();
+        while (!isValidInt(input, -1, 2)) {
+            // Checks input (int included in [-1, 1])
+            System.out.println("ERROR - Veuillez entrer une valeur correcte : ");
+            System.out.print("> ");
+            input = Entity.lireClavier();
+        }
+
+        boolean exitDonations = (input == "-1") ? true : false;
+
+        while (!exitDonations) {
+            switch (input) {
+                case "-1":
+                    exitDonations = true;
+                    break;
+    
+                // Demander des donations
+                case "0":
+                    asso.ask_money_all(asso.generateRapport());
+                    break;
+
+                // Ajouter un nouveau donateur
+                case "1":
+                    asso.add_donnateurs(new Externe(0));
+                    System.out.println("Nouveau donateur cree");
+                    break;
+    
+                // Recevoir une donation
+                case "2":
+                    System.out.print("Montant de la donation: ");
+                    String donation = Entity.lireClavier();
+                    while (!isValidInt(donation)) {
+                        System.out.println("ERROR - Montant invalide :");
+                        System.out.print(">");
+                        donation = Entity.lireClavier();
+                    }
+                    asso.give_don(Integer.parseInt(donation));
+                    System.out.println();
+                    break;
+    
+                default:
+                    System.out.println("ERROR in switch menu");
+                    break;
+            } 
+            
+            if (!exitDonations) {
+                System.out.println();
+                System.out.println("=== DONATIONS ===");
+                System.out.println("0 : Demander des donations");
+                System.out.println("1 : Ajouter un nouveau donateur");
+                System.out.println("2 : Recevoir une donation");
+                System.out.println("-1 : Retour au menu principal");
+    
+                input = Entity.lireClavier();
+                while (!isValidInt(input, -1, 2)) {
+                    System.out.println("ERROR - Veuillez entrer une valeur correcte : ");
+                    input = Entity.lireClavier();
+                }
+            }
+        }
+    }
+
+    /**
+     * Command line interaction for paying a debt
+     */
+    public static void paiementFacture() {
+        System.out.print("Montant de la facture: ");
+        String facture = Entity.lireClavier();
+        while (!isValidInt(facture)) {
+            System.out.println("ERROR - Montant invalide :");
+            System.out.print(">");
+            facture = Entity.lireClavier();
+        }
+        asso.do_facture(Integer.parseInt(facture));
+        System.out.println();
+        System.out.println("Solde après paiement : " + asso.getSolde());
+        System.out.println();
+    }
+    /**
      * Checks if given string is an integer
      * @param input
-     * @return
+     * @return True if valid, False if not
      */
     public static boolean isValidInt(String input) {
         return (Entity.isInteger(input));
@@ -405,7 +530,7 @@ public class Main {
      * @param input
      * @param min
      * @param max
-     * @return
+     * @return True if valid, False if not
      */
     public static boolean isValidInt(String input, int min, int max) {
         return (Entity.isInteger(input) && Integer.parseInt(input) <= max && Integer.parseInt(input) >= min);

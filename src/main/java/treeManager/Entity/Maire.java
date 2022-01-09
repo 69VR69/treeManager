@@ -45,21 +45,6 @@ public class Maire extends Externe {
         }
     }
 
-    /**
-     * Utility - Check if given String is a correct Int
-     *
-     * @param str
-     * @return True if correct, or False
-     */
-    private static boolean isInteger(String str) { // TODO move in appropriate class/package ?
-        try {
-            Integer.parseInt(str);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
-        }
-    }
-
     public Tree mayor_tree_select(ArrayList<Tree> t_list) {
         //TODO moove into mairie or make it a main function idk how to implement this thing
         return null;

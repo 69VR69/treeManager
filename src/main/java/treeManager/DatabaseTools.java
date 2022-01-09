@@ -638,6 +638,8 @@ public class DatabaseTools
                         getId.next();
                         m.setId(getId.getInt("id"));
                         
+                        addAllTree(m.getProposedTrees());
+                        
                         for (Tree t : m.getProposedTrees())
                             {
                                 ps = connection.prepareStatement(SQLREQUEST.insertMemberTree);
@@ -646,6 +648,7 @@ public class DatabaseTools
                                 ps.executeUpdate();
                             }
                         
+                        addAllVisite(m.get_visites());
                         for (Visite v : m.get_visites())
                             {
                                 ps = connection.prepareStatement(SQLREQUEST.insertMemberVisite);
@@ -680,6 +683,7 @@ public class DatabaseTools
                         
                         ps.executeUpdate();
                         
+                        addAllTree(m.getProposedTrees());
                         for (Tree t : m.getProposedTrees())
                             {
                                 ps = connection.prepareStatement(SQLREQUEST.updateMemberTree);
@@ -688,6 +692,7 @@ public class DatabaseTools
                                 ps.executeUpdate();
                             }
                         
+                        addAllVisite(m.get_visites());
                         for (Visite v : m.get_visites())
                             {
                                 ps = connection.prepareStatement(SQLREQUEST.updateMemberVisite);
@@ -787,7 +792,7 @@ public class DatabaseTools
          *
          * @param a l'association
          */
-        private void updateAssociation(Association a)
+        public void updateAssociation(Association a)
             {
                 try
                     {
@@ -806,13 +811,7 @@ public class DatabaseTools
                         
                         ps.executeUpdate();
                         
-                        for (Member m : a.getMembers())
-                            {
-                                ps = connection.prepareStatement(SQLREQUEST.updateAssociationMember);
-                                ps.setInt(1, 0);
-                                ps.setInt(2, m.getId());
-                                ps.executeUpdate();
-                            }
+                        addAllMember(a.getMembers());
                         
                         for (Externe e : a.getDonnateurs())
                             {
@@ -821,6 +820,8 @@ public class DatabaseTools
                                 ps.setInt(2, e.getId());
                                 ps.executeUpdate();
                             }
+                        
+                        addAllTree(a.getTrees());
                         
                         for (Tree t : a.getTrees())
                             {

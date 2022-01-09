@@ -285,7 +285,7 @@ public class Association {
         }
 
         if (mairie==null){
-            System.out.println("Aucunu Mairie n'a été renseignez. Le bilan fiscale n'a pas été réaliser. Veuillez en renseigner une");
+            System.out.println("Aucune Mairie n'a été renseignée. Le bilan fiscal n'a pas été réalisé. Veuillez en renseigner une");
             return;
         }
 

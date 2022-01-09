@@ -16,7 +16,7 @@ public class Visite
                 this.id = 0;
                 this.date = date;
                 this.tree=tree;
-                this.rapport = "";
+                this.rapport = null;
             }
         
         public Visite(int id, Date date, String rapport,Tree tree)

@@ -348,8 +348,7 @@ public class Association {
                 return;
             }
         }
-        //TODO warn user of the execution?
-        System.out.println("Not done yet!");
+        //TODO warn user of the execution;
     }
 
     /**
@@ -534,7 +533,7 @@ public class Association {
 
     //endregion
 
-    //region adder in arraylist
+    //region adders,printers and getters of arraylist
     public void add_member(Member m) {
         members.add(m);
     }
@@ -546,6 +545,32 @@ public class Association {
     public void add_donnateurs(Externe e) {
         donnateurs.add(e);
     }
+
+    public Tree get_tree_by_id(int i){
+        if (i> trees.size()|| i<0){
+            return null;
+        }
+        else {
+            return trees.get(i);
+        }
+    }
+
+    public Member get_member_by_id(int i){
+        if (i> members.size()|| i<0){
+            return null;
+        }
+        else {
+            return members.get(i);
+        }
+    }
+
+    public void print_trees(){
+        for (int i=0;i<trees.size();i++){
+            System.out.println("ID : " + i + " ; "+ trees.get(i).toString());
+        }
+    }
+    public void print_members(){}
+    public void print_donnateurs(){}
     //endregion
 
 }

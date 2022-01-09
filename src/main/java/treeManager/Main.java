@@ -12,8 +12,8 @@ public class Main {
     static public DatabaseTools db;
     public static void main(String[] args) {
         asso = new Association();
-        db = new DatabaseTools(ip, user, password); // TODO ip, user, password for db pls
-        db.open(user, password); // TODO same (est-ce que c'est ici qu'il faut le faire tho... ?)
+        //db = new DatabaseTools(ip, user, password); // TODO ip, user, password for db pls
+        //db.open(user, password); // TODO same (est-ce que c'est ici qu'il faut le faire tho... ?)
 
         // TODO peupler l'asso avec le pouvoir de la DB (AFO, c'est à toi-)
 
@@ -148,7 +148,7 @@ public class Main {
     public static void gestionVisites() {
         System.out.println("VISITES");
         System.out.println("0 : Nouvelle visite");
-        //System.out.println("1 : Voir arbres sans visite");
+        System.out.println("1 : Finir une visite");
         System.out.println("-1 : Retour au menu principal");
 
         String input = Entity.lireClavier();
@@ -169,20 +169,54 @@ public class Main {
     
                 case "0":
                     System.out.print("ID de l'arbre visite : ");
-                    String tmpVisite = Entity.lireClavier();
-                    while (!isValidInt(tmpVisite)) {
+                    String tmp_id_tree = Entity.lireClavier();
+                    while (!isValidInt(tmp_id_tree)) {
                         System.out.println("ERROR - Veuillez entrer une valeur correcte : ");
-                        tmpVisite = Entity.lireClavier();
+                        tmp_id_tree = Entity.lireClavier();
                     }
-                    Tree treeVisite = db.getTreeById(Integer.parseInt(tmpVisite));
-                    Visite v = new Visite(new Date(), treeVisite); // TODO proper ask for date of visit
+                    /*Tree treeVisite = db.getTreeById(Integer.parseInt(tmpVisite));
+                    Visite v = new Visite(new Date(), treeVisite); // TODO proper ask for date of visit*/
 
-                    System.out.print("Entrer le report : ");
-                    String reportVisite = Entity.lireClavier();
-                    asso.do_visite(v, reportVisite); 
+                    System.out.print("ID du memmbre qui fera la visite : ");
+                    String tmp_id_member = Entity.lireClavier();
+                    while (!isValidInt(tmp_id_member)) {
+                        System.out.println("ERROR - Veuillez entrer une valeur correcte : ");
+                        tmp_id_member = Entity.lireClavier();
+                    }
+                    ;
+
+                    asso.ask_visite(asso.get_tree_by_id( Integer.parseInt(tmp_id_tree)),asso.get_member_by_id(Integer.parseInt(tmp_id_member)));
+
                     System.out.println();
                     break;
-    
+
+                case "1":
+                    System.out.print("Entrer le rapport : ");
+                    String reportVisite = Entity.lireClavier();
+
+                    System.out.print("ID du memmbre qui fera la visite : ");
+                    String tmp_id_member_2 = Entity.lireClavier();
+                    while (!isValidInt(tmp_id_member_2)) {
+                        System.out.println("ERROR - Veuillez entrer une valeur correcte : ");
+                        tmp_id_member = Entity.lireClavier();
+                    }
+                    ;
+                    Member m = asso.get_member_by_id(Integer.parseInt(tmp_id_member_2));
+                    m.get_visites(); //TODO Print visite
+
+                    System.out.print("ID du memmbre qui fera la visite : ");
+                    String tmp_id_visit= Entity.lireClavier();
+                    while (!isValidInt(tmp_id_visit)) {
+                        System.out.println("ERROR - Veuillez entrer une valeur correcte : ");
+                        tmp_id_visit = Entity.lireClavier();
+                    }
+                    ;
+
+
+                    asso.do_visite(m.get_visites().get(Integer.parseInt((tmp_id_visit))), reportVisite);
+                    System.out.println();
+                    break;
+
                 default:
                     System.out.println("ERROR in switch menu");
                     break;
@@ -191,7 +225,7 @@ public class Main {
             if (!exitVisites) {
                 System.out.println();
                 System.out.println("0 : Nouvelle visite");
-                //System.out.println("1 : Voir arbres sans visite");
+                System.out.println("1 : Finir une visite");
                 System.out.println("-1 : Retour au menu principal");
     
                 input = Entity.lireClavier();

@@ -12,8 +12,8 @@ public class Main {
     static public DatabaseTools db;
     public static void main(String[] args) {
         asso = new Association();
-        db = new DatabaseTools(ip, user, password); // TODO ip, user, password for db pls
-        db.open(user, password); // TODO same (est-ce que c'est ici qu'il faut le faire tho... ?)
+        //db = new DatabaseTools(ip, user, password); // TODO ip, user, password for db pls
+       // db.open(user, password); // TODO same (est-ce que c'est ici qu'il faut le faire tho... ?)
 
         // TODO peupler l'asso avec le pouvoir de la DB (AFO, c'est à toi-)
 

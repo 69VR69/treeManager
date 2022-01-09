@@ -150,7 +150,7 @@ public class Association {
      * @return le booleen true si elle peux se permettre la depense, false sinon
      */
     private boolean can_pay(int m) {
-        return ((solde = +m) > 0);
+        return ((solde =- m) > 0);
     }
 
 

@@ -315,7 +315,7 @@ public class Main {
                         System.out.println("ERROR - Hauteur invalide :");
                         tmp = Entity.lireClavier();
                     }
-                    int hauteur = Integer.parseInt(Entity.lireClavier());
+                    int hauteur = Integer.parseInt(tmp);
 
                     System.out.println();
                     System.out.print("Epaisseur : ");
@@ -324,7 +324,7 @@ public class Main {
                         System.out.println("ERROR - Epaisseur invalide :");
                         tmp = Entity.lireClavier();
                     }
-                    int epaisseur = Integer.parseInt(Entity.lireClavier());
+                    int epaisseur = Integer.parseInt(tmp);
 
                     System.out.println();
                     System.out.print("Espece : ");

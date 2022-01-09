@@ -6,7 +6,7 @@ public class SQLREQUEST
         public static String selectTree = "SELECT * FROM tree WHERE id = ? LIMIT 1";
         public static String selectAllTree = "SELECT * FROM tree";
         public static String selectFiveTreeByVote = "SELECT * FROM tree WHERE remarquable = 'false' ORDER BY num_votes, thickness, height  LIMIT 5";
-        public static String insertTree = "INSERT INTO tree (name_fr,age,height,thickness,species,type,remarquable,location,num_votes,domain,address,address_details,district) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        public static String insertTree = "INSERT INTO tree VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         public static String updateTree = "UPDATE tree SET name_fr = ?, age = ?, height = ?, thickness = ?, species = ?, type = ?, remarquable = ?, location = ?, num_votes = ?, domain = ?, address = ?, address_details = ?, district = ? WHERE id = ?";
         
         // Visite

@@ -163,31 +163,27 @@ public class DatabaseTools
                     {
                         PreparedStatement ps = connection.prepareStatement(SQLREQUEST.insertTree);
                         
-                        ps.setString(1, t.getNomfr());
-                        ps.setString(2, t.getAge());
-                        ps.setInt(3, t.getHauteur());
-                        ps.setInt(4, t.getEpaisseur());
-                        ps.setString(5, t.getEspece());
-                        ps.setString(6, t.getGenre());
-                        ps.setBoolean(7, t.isRemarquable());
-                        ps.setString(8, t.getEmplacement());
-                        ps.setInt(9, t.getNb_votes());
-                        ps.setString(10, t.getDomaine());
-                        ps.setString(11, t.getAdresse());
-                        ps.setString(12, t.getComplement());
-                        ps.setString(13, t.getArrondissement());
+                        ps.setInt(1, t.getId());
+                        ps.setString(2, t.getNomfr());
+                        ps.setString(3, t.getAge());
+                        ps.setInt(4, t.getHauteur());
+                        ps.setInt(5, t.getEpaisseur());
+                        ps.setString(6, t.getEspece());
+                        ps.setString(7, t.getGenre());
+                        ps.setBoolean(8, t.isRemarquable());
+                        ps.setString(9, t.getEmplacement());
+                        ps.setInt(10, t.getNb_votes());
+                        ps.setString(11, t.getDomaine());
+                        ps.setString(12, t.getAdresse());
+                        ps.setString(13, t.getComplement());
+                        ps.setString(14, t.getArrondissement());
                         
                         ps.executeUpdate();
-                        
-                        ResultSet getId = ps.getGeneratedKeys();
-                        getId.next();
-                        t.setId(getId.getInt("id"));
-                        
-                        ps.close();
                     }
                 catch (Exception e)
                     {
                         e.printStackTrace();
+                        System.exit(-1);
                     }
             }
         

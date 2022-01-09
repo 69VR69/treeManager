@@ -3,8 +3,6 @@ package treeManager;
 import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
 import treeManager.Data.Tree;
-
-import javax.xml.crypto.Data;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -47,9 +45,9 @@ public class ImportData
     
         public static void main(String[] args)
             {
-                DatabaseTools db = new DatabaseTools("192.168.1.81","tree_manager","");
+                DatabaseTools db = new DatabaseTools("127.0.0.1","root","");
                 ImportData importData = new ImportData();
-                //importData.csvToDB("/data.csv",db);
+                importData.csvToDB("/data.csv",db);
             }
         
         public void printCSV(String path)

@@ -57,20 +57,23 @@ public class Visite
                 return rapport;
             }
         
-        public void setRapport(String rapport) {
-            this.rapport = rapport;
-        }
-
-        public Tree getTree() {
-            return tree;
-        }
-
-        public void setTree(Tree tree) {
-            this.tree = tree;
-        }
-
+        public void setRapport(String rapport)
+            {
+                this.rapport = rapport;
+            }
+    
+        public Tree getTree()
+            {
+                return tree;
+            }
+    
+        public void setTree(Tree tree)
+            {
+                this.tree = tree;
+            }
+    
         @Override public String toString()
             {
-                return "Visite{" + "date=" + date + ", rapport='" + rapport +", tree='" + tree + '\'' + '}';
+                return "Visite{" + "date=" + date + ", rapport='" + rapport + '\'' + '}';
             }
     }

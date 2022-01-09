@@ -22,15 +22,15 @@ public class DatabaseTools
                 this.ip = ip;
                 this.user = user;
                 this.password = password;
-                this.open();
+                this.open(user, password);
             }
         
-        public void open()
+        public void open(String user, String password)
             {
                 try
                     {
                         Class.forName("org.mariadb.jdbc.Driver");
-                        connection = DriverManager.getConnection(this.composeUrl());
+                        connection = DriverManager.getConnection(this.composeUrl(),user,password);
                     }
                 catch (Exception e)
                     {
@@ -40,7 +40,12 @@ public class DatabaseTools
         
         private String composeUrl()
             {
-                return "jdbc:mariadb://" + ip + ":3306/tree_manager?user=" + getUser() + "&password=" + getPassword();
+                String url =
+                 "jdbc:mariadb://" + ip + ":3306/tree_manager";
+                
+                System.out.println("Connection string : " + url);
+                
+                return url;
             }
         
         public String getUser()
@@ -275,7 +280,7 @@ public class DatabaseTools
                         ps.setInt(1, v.getId());
                         ps.setDate(2, (Date) v.getDate());
                         ps.setString(3, v.getRapport());
-                        ps.setInt(4, v.getMember().getId());
+                       // ps.setInt(4, v.getMember().getId());
                         
                         ps.executeUpdate();
                         
@@ -297,7 +302,7 @@ public class DatabaseTools
                         
                         ps.setDate(1, (Date) v.getDate());
                         ps.setString(2, v.getRapport());
-                        ps.setInt(3, v.getMember().getId());
+                        //ps.setInt(3, v.getMember().getId());
                         //Where
                         ps.setInt(3, v.getId());
                         

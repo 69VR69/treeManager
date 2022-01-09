@@ -3,6 +3,7 @@ package treeManager;
 import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
 import treeManager.Data.Tree;
+
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -33,7 +34,7 @@ public class ImportData
                 data.remove(0);
                 
                 for (String[] o : data)
-                    treeList.add(new Tree(Integer.parseInt(o[0]), o[8], o[14], Integer.parseInt(o[13]), Integer.parseInt(o[12]), o[10], o[9], !(o[15] == null || o[15].equalsIgnoreCase("non")), o[7], 0, o[2], o[3], o[6], o[4]));
+                    treeList.add(new Tree(Integer.parseInt(o[0]), ((o[8] == null) ? "" : o[8]), ((o[14] == null) ? "." : o[14]), Integer.parseInt(o[13]), Integer.parseInt(o[12]), ((o[10] == null) ? "." : o[10]), ((o[9] == null) ? "." : o[9]), !(o[15] == null || o[15].equalsIgnoreCase("non")), ((o[7] == null) ? "." : o[7]), 0, ((o[2] == null) ? "." : o[2]), ((o[3] == null) ? "." : o[3]), ((o[6] == null) ? "." : o[6]), ((o[4] == null) ? "." : o[4])));
                 
                 return treeList;
             }
@@ -42,12 +43,12 @@ public class ImportData
             {
                 db.addAllTree(importCSVAndCreateObject(path));
             }
-    
+        
         public static void main(String[] args)
             {
-                DatabaseTools db = new DatabaseTools("127.0.0.1","root","");
+                DatabaseTools db = new DatabaseTools("127.0.0.1", "root", "");
                 ImportData importData = new ImportData();
-                importData.csvToDB("/data.csv",db);
+                importData.csvToDB("/data.csv", db);
             }
         
         public void printCSV(String path)

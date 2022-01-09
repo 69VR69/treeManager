@@ -182,7 +182,7 @@ public class Tree
         
         @Override public String toString()
             {
-                return "Tree{" + "remarquable=" + remarquable + ", age='" + age + '\'' + ", hauteur (m)=" + hauteur + ", epaisseur (cm)=" + epaisseur + ", nom francais='" + nomfr + '\'' + ", genre='" + genre + '\'' + ", espece='" + espece + '\'' + ", emplacement=" + emplacement + ", adresse='" + adresse + '\'' + ", arrondissement='" + arrondissement + '\'' + ", domaine='" + domaine + '\'' + "}\n";
+                return "Tree with id = " + id + " {" + "remarquable=" + remarquable + ", age='" + age + '\'' + ", hauteur (m)=" + hauteur + ", epaisseur (cm)=" + epaisseur + ", nom francais='" + nomfr + '\'' + ", genre='" + genre + '\'' + ", espece='" + espece + '\'' + ", emplacement=" + emplacement + ", adresse='" + adresse + '\'' + ", arrondissement='" + arrondissement + '\'' + ", domaine='" + domaine + '\'' + ", complement='" + complement + '\'' + "}\n";
             }
         
     }

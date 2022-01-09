@@ -388,7 +388,7 @@ public class Association {
      *
      * @param the_chosen_one l'arbre qui sera mis remarquable
      */
-    private void make_tree_remarkable(Tree the_chosen_one) {
+    public void make_tree_remarkable(Tree the_chosen_one) {
         the_chosen_one.setRemarquable(true);
     }
 

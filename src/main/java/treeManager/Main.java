@@ -9,13 +9,13 @@ import treeManager.Data.*;
 
 public class Main {
     static public Association asso;
-    static public DatabaseTools db;
+
     public static void main(String[] args) {
-        
+
         ImportData importData = new ImportData();
         DatabaseTools dbTool = new DatabaseTools("127.0.0.1","root","");
         dbTool.addAllTree(importData.importCSVAndCreateObject(args[0]));
-        
+
         asso = dbTool.getAssociation();
 
         System.out.println("=== ACCUEIL ===");
@@ -74,7 +74,7 @@ public class Main {
         }
 
         dbTool.updateAssociation(asso);
-        
+
         System.out.println("Goodbye");
     }
 
@@ -278,8 +278,8 @@ public class Main {
             switch (input)
                 {
                     case "-1" -> exitArbres = true;
-            
-            
+
+
                     // Ajouter un nouvel arbre
                     case "0" -> {
                         System.out.print("Nom de l'arbre : ");
@@ -333,7 +333,7 @@ public class Main {
                         asso.add_tree(t);
                         System.out.println();
                     }
-            
+
                     // Voter pour un arbre
                     case "1" -> {
                         System.out.print("ID du membre votant: ");
@@ -351,14 +351,14 @@ public class Main {
                             }
                         else
                             {
-                                System.out.print("ID du membre votant: ");
+                                asso.print_trees();
+                                System.out.print("ID de l'arbre votant: ");
                                 String idTree = Entity.lireClavier();
-                                while (!isValidInt(idTree))
-                                    {
-                                        System.out.println("ERROR - ID invalide :");
-                                        idTree = Entity.lireClavier();
-                                    }
-                                Tree tVote = db.getTreeById(Integer.parseInt(idTree));
+                                while(!isValidInt(idTree)) {
+                                    System.out.println("ERROR - ID invalide :");
+                                    idTree = Entity.lireClavier();
+                                }
+                                Tree tVote = asso.get_tree_by_id(Integer.parseInt(idTree));
                                 tVote.setNb_votes(tVote.getNb_votes() + 1);
                                 ArrayList<Tree> newProposedTrees = memberVote.getProposedTrees();
                                 newProposedTrees.add(tVote);
@@ -366,9 +366,10 @@ public class Main {
                             }
                         System.out.println();
                     }
-            
+
                     // Nominer un arbre
                     case "2" -> {
+                        asso.print_trees();
                         System.out.print("ID de l'arbre à nominer: ");
                         String id = Entity.lireClavier();
                         while (!isValidInt(id))
@@ -376,7 +377,7 @@ public class Main {
                                 System.out.println("ERROR - ID invalide :");
                                 id = Entity.lireClavier();
                             }
-                        db.getTreeById(Integer.parseInt(id)).setRemarquable(true);
+                        asso.make_tree_remarkable(asso.get_tree_by_id(Integer.parseInt(id)));
                         System.out.println();
                     }
                     default -> System.out.println("ERROR in switch menu");
@@ -427,18 +428,18 @@ public class Main {
             switch (input)
                 {
                     case "-1" -> exitDonations = true;
-            
-            
+
+
                     // Demander des donations
                     case "0" -> asso.ask_money_all(asso.generateRapport());
-            
-            
+
+
                     // Ajouter un nouveau donateur
                     case "1" -> {
                         asso.add_donnateurs(new Externe(0));
                         System.out.println("Nouveau donateur cree");
                     }
-            
+
                     // Recevoir une donation
                     case "2" -> {
                         System.out.print("Montant de la donation: ");

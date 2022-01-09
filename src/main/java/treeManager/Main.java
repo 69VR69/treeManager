@@ -1,9 +1,7 @@
 package treeManager;
 
-public class Main
-    {
-        public static void main(String[] args)
-            {
-                System.out.println("Hello tree!");
-            }
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("Hello tree!");
     }
+}

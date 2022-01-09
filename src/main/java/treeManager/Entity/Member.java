@@ -96,10 +96,17 @@ public class Member implements Entity
          * Get the number of visits done by the member
          */
         public int getNbVisites()
-            {
-                return nbVisites;
-            }
-        
+        {
+            return nbVisites;
+        }
+
+        public ArrayList<Visite> get_visites(){
+            return visites;
+        }
+
+        public void add_visite(Visite v){
+            visites.add(v);
+        }
         /**
          * Increments the number of visits done by the member
          */

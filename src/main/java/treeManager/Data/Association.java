@@ -314,21 +314,33 @@ public class Association {
     //region members manage
 
     //reset le payment des membres
+
+    /**
+     * iterate over every member and reset their payemetn status
+     */
     private void reset_member_payment() {
 
         for(int i = 0; i<members.size();i++){
-            //TODO define function
             members.get(i).unpayCotisation();
         }
 
     }
 
-
+    /**
+     * update payement status of a member
+     *
+     * @param m the memeber who pay
+     */
     public void pay_cotisation(Member m) {
         m.payCotisation();
         add_cotise();
     }
 
+    /**
+     * cherche le membre et le supprime
+     *
+     * @param m le membre qui sera desinscrit
+     */
     public void desinscrire(Member m) {
         for (int i = 0; i < members.size(); i++) {
             if (members.get(i) == m) {
@@ -340,12 +352,22 @@ public class Association {
         System.out.println("Not done yet!");
     }
 
+    /**
+     * supprime le memebre dans le tableau des membres
+     *
+     * @param index l'index du membre
+     * @param m le membre a supprimer
+     */
     public void desinscrire(int index, Member m) {
         m.deleteMember();//clean BD
         members.remove(index); //remove from member list
     }
 
 
+    /**
+     * passe sur tout les membre et les desinscrit si ils n'ont pas payer
+     *
+     */
     public void ban() {
         for (int i = 0; i < members.size(); i++) {
             if (!members.get(i).hasPayed()) {
@@ -358,11 +380,23 @@ public class Association {
     //endregion
 
     //region trees manage
+
+    /**
+     * rend un arbre remarquable
+     *
+     * @param the_chosen_one l'arbre qui sera mis remarquable
+     */
     private void make_tree_remarkable(Tree the_chosen_one) {
         the_chosen_one.setRemarquable(true);
     }
 
     //selection 5 arbres dans ceux proposé par les membres
+
+    /**
+     * selectionne les 5 arbres avec le plus de vote
+     *
+     * @return la liste des 5 arbres
+     */
     private ArrayList<Tree> top5tree() {
         //TODO do sql request
         String request = "select top(5) from tree where remarquable = 'false' order by num_votes,thickness,height";
@@ -373,6 +407,14 @@ public class Association {
     //region visite manage
 
     //demende de visite (check si arbre dispo dans +add si oui)
+
+    /**
+     * regarge si un membre peux faire une visite a un arbre donne, et reverve la visite pour l'arbre
+     *
+     * @param t l'arbre visite
+     * @param member le membre qui veux realiser la visite
+     * @param date la date de la visite
+     */
     public void ask_visite(Tree t, Member member, Date date) {
         if (!can_pay(montant_remboursement)) {
             //TODO warn, currently not enough money
@@ -401,12 +443,25 @@ public class Association {
         }
     }
 
+    /**
+     * la meme que l'autre ask_visite mais donnera la date du jour pour faire la visite
+     *
+     * @param t arbre a visite
+     * @param member le membre qui fait la visite
+     */
     public void ask_visite(Tree t, Member member) {
         Date date = new Date(); // This object contains the current date value
         ask_visite(t, member, date);
     }
 
     //ajoute le rapport a la visite + defreiment
+
+    /**
+     * met un rapport a la viste et rembourse le membre
+     *
+     * @param v la visite qu'il faut changer
+     * @param report le rapport de la visite
+     */
     public void do_visite(Visite v, String report) {
         if (!can_pay(montant_remboursement)) {
             //TODO warn user not enough money, report not validate

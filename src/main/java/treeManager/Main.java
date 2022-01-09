@@ -1,12 +1,20 @@
 package treeManager;
 
 import treeManager.Entity.*;
+
+import java.util.ArrayList;
+import java.util.Date;
+
 import treeManager.Data.*;
 
 public class Main {
     static public Association asso;
+    static public DatabaseTools db;
     public static void main(String[] args) {
         asso = new Association();
+        db = new DatabaseTools(ip, user, password); // TODO ip, user, password for db pls
+        db.open(user, password); // TODO same (est-ce que c'est ici qu'il faut le faire tho... ?)
+
         // TODO peupler l'asso avec le pouvoir de la DB (AFO, c'est à toi-)
 
         System.out.println("ACCUEIL");
@@ -140,11 +148,11 @@ public class Main {
     public static void gestionVisites() {
         System.out.println("VISITES");
         System.out.println("0 : Nouvelle visite");
-        System.out.println("1 : Voir arbres sans visite");
+        //System.out.println("1 : Voir arbres sans visite");
         System.out.println("-1 : Retour au menu principal");
 
         String input = Entity.lireClavier();
-        while (!isValidInt(input, -1, 1)) {
+        while (!isValidInt(input, -1, 0)) {
             // Checks input (int included in [-1, 1])
             System.out.println("ERROR - Veuillez entrer une valeur correcte : ");
             System.out.print("> ");
@@ -160,20 +168,18 @@ public class Main {
                     break;
     
                 case "0":
-                    System.out.print("Nom du nouveau membre : ");
-                    asso.add_member(new Member(Entity.lireClavier()));
-                    System.out.println();
-                    break;
-    
-                case "1":
-                    System.out.print("Nom du membre à supprimer : ");
-                    asso.desinscrire(new Member(Entity.lireClavier()));
-                    System.out.println();
-                    break;
-    
-                case "2":
-                    System.out.print("Nom du membre qui a payé sa cotisation : ");
-                    asso.pay_cotisation(new Member(Entity.lireClavier()));
+                    System.out.print("ID de l'arbre visite : ");
+                    String tmpVisite = Entity.lireClavier();
+                    while (!isValidInt(tmpVisite)) {
+                        System.out.println("ERROR - Veuillez entrer une valeur correcte : ");
+                        tmpVisite = Entity.lireClavier();
+                    }
+                    Tree treeVisite = db.getTreeById(Integer.parseInt(tmpVisite));
+                    Visite v = new Visite(new Date(), treeVisite); // TODO proper ask for date of visit
+
+                    System.out.print("Entrer le report : ");
+                    String reportVisite = Entity.lireClavier();
+                    asso.do_visite(v, reportVisite); 
                     System.out.println();
                     break;
     
@@ -184,13 +190,12 @@ public class Main {
             
             if (!exitVisites) {
                 System.out.println();
-                System.out.println("0 : Nouveau membre");
-                System.out.println("1 : Supprimer un membre");
-                System.out.println("2 : Payer la cotisation d'un membre");
+                System.out.println("0 : Nouvelle visite");
+                //System.out.println("1 : Voir arbres sans visite");
                 System.out.println("-1 : Retour au menu principal");
     
                 input = Entity.lireClavier();
-                while (!isValidInt(input, -1, 2)) {
+                while (!isValidInt(input, -1, 0)) {
                     System.out.println("ERROR - Veuillez entrer une valeur correcte : ");
                     input = Entity.lireClavier();
                 }
@@ -204,11 +209,12 @@ public class Main {
     public static void gestionArbres() {
         System.out.println("ARBRES");
         System.out.println("0 : Nouvel arbre");
-        System.out.println("1 : Nominer arbre(s)");
+        System.out.println("1 : Voter pour un arbre");
+        System.out.println("2 : Nominer un arbre");
         System.out.println("-1 : Retour au menu principal");
 
         String input = Entity.lireClavier();
-        while (!isValidInt(input, -1, 1)) {
+        while (!isValidInt(input, -1, 2)) {
             // Checks input (int included in [-1, 1])
             System.out.println("ERROR - Veuillez entrer une valeur correcte : ");
             System.out.print("> ");
@@ -223,6 +229,7 @@ public class Main {
                     exitArbres = true;
                     break;
     
+                // Ajouter un nouvel arbre
                 case "0":
                     System.out.print("Nom de l'arbre : ");
                     String nom = Entity.lireClavier();
@@ -285,16 +292,45 @@ public class Main {
                     asso.add_tree(t);
                     System.out.println();
                     break;
-    
+
+                // Voter pour un arbre
                 case "1":
-                    System.out.print("Nom du membre à supprimer : ");
-                    asso.desinscrire(new Member(Entity.lireClavier()));
+                    System.out.print("ID du membre votant: ");
+                    String idMembre = Entity.lireClavier();
+                    while(!isValidInt(idMembre)) {
+                        System.out.println("ERROR - ID invalide :");
+                        idMembre = Entity.lireClavier();
+                    }
+                    Member memberVote = db.getMemberById(Integer.parseInt(idMembre));
+                    System.out.println("Votes realises: " + memberVote.getProposedTrees().size());
+                    if (memberVote.getProposedTrees().size() == 5) {
+                        System.out.println("Vous avez deja vote pour cinq arbres.");
+                    } else {
+                        System.out.print("ID du membre votant: ");
+                        String idTree = Entity.lireClavier();
+                        while(!isValidInt(idTree)) {
+                            System.out.println("ERROR - ID invalide :");
+                            idTree = Entity.lireClavier();
+                        }
+                        Tree tVote = db.getTreeById(Integer.parseInt(idTree));
+                        tVote.setNb_votes(tVote.getNb_votes() + 1);
+                        ArrayList<Tree> newProposedTrees = memberVote.getProposedTrees();
+                        newProposedTrees.add(tVote);
+                        memberVote.setProposedTrees(newProposedTrees);
+                    }
+
                     System.out.println();
                     break;
     
+                // Nominer un arbre
                 case "2":
-                    System.out.print("Nom du membre qui a payé sa cotisation : ");
-                    asso.pay_cotisation(new Member(Entity.lireClavier()));
+                    System.out.print("ID de l'arbre à nominer: ");
+                    String id = Entity.lireClavier();
+                    while(!isValidInt(id)) {
+                        System.out.println("ERROR - ID invalide :");
+                        id = Entity.lireClavier();
+                    }
+                    db.getTreeById(Integer.parseInt(id)).setRemarquable(true);
                     System.out.println();
                     break;
     
@@ -305,9 +341,9 @@ public class Main {
             
             if (!exitArbres) {
                 System.out.println();
-                System.out.println("0 : Nouveau membre");
-                System.out.println("1 : Supprimer un membre");
-                System.out.println("2 : Payer la cotisation d'un membre");
+                System.out.println("0 : Nouvel arbre");
+                System.out.println("1 : Voter pour un arbre");
+                System.out.println("2 : Nominer un arbre");
                 System.out.println("-1 : Retour au menu principal");
     
                 input = Entity.lireClavier();

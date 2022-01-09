@@ -355,7 +355,7 @@ public class DatabaseTools
                     insertMember(m);
             }
         
-        private Member getMemberById(int id)
+        public Member getMemberById(int id)
             {
                 try
                     {

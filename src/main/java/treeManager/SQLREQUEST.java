@@ -8,8 +8,8 @@ public class SQLREQUEST
         // Tree
         public static String selectTree = "SELECT * FROM tree WHERE id = ? LIMIT 1";
         public static String selectAllTree = "SELECT * FROM tree";
-        public static String selectFiveTreeByVote = "SELECT * FROM tree WHERE remarquable = true ORDER BY (SELECT v.date FROM tree as t INNER JOIN member_tree as mt ON t.id = mt.id_tree INNER JOIN member as m ON mt.id_member = m.id INNER JOIN member_visite as mv ON m.id = mv.id_member INNER JOIN visite as v ON mv.id_visite = v.id) DESC";
-        public static String selectRemarquableTreeByAge = "SELECT * FROM tree WHERE remarquable = 'false' ORDER BY case when age = 'Jeune (arbre)' then 1 when age = 'Jeune (arbre)Adulte' then 2 when age = 'Adulte' then 3 when age = 'Mature' then 4 else 5 end asc";
+        public static String selectFiveTreeByVote = "SELECT * FROM tree WHERE remarquable = 'false' ORDER BY num_votes, thickness, height  LIMIT 5";
+        public static String selectRemarquableTreeByAge =                 "SELECT * FROM tree WHERE remarquable = true ORDER BY (SELECT v.date FROM tree as t INNER JOIN member_tree as mt ON t.id = mt.id_tree INNER JOIN member as m ON mt.id_member = m.id INNER JOIN member_visite as mv ON m.id = mv.id_member INNER JOIN visite as v ON mv.id_visite = v.id) DESC";
         public static String insertTree = "INSERT INTO tree VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         public static String updateTree = "UPDATE tree SET name_fr = ?, age = ?, height = ?, thickness = ?, species = ?, type = ?, remarquable = ?, location = ?, num_votes = ?, domain = ?, address = ?, address_details = ?, district = ? WHERE id = ?";
         
@@ -31,11 +31,9 @@ public class SQLREQUEST
         
         //Association
         public static String selectAssociation = "SELECT * FROM association";
-        public static String selectAssociationExterne = "SELECT * FROM externe WHERE id = (SELECT * id_externe FROM association_externe WHERE id_association = ? LIMIT 1)";
-        public static String selectAssociationMember = "SELECT * FROM member WHERE id = (SELECT * id_member FROM association_member WHERE id_association = ? LIMIT 1)";
-        public static String selectAssociationTree = "SELECT * id_tree FROM association_tree WHERE id_association = ? LIMIT 1";
+        public static String selectAssociationMember = "SELECT * FROM member WHERE id = (SELECT id_member FROM association_member WHERE id_association = ? LIMIT 1)";
+        public static String selectAssociationTree = "SELECT id_tree FROM association_tree WHERE id_association = ? LIMIT 1";
         public static String updateAssociation = "UPDATE association SET num_max_visite = ?, refund_amount = ?, contributed_amount = ?, balance = ?, contribution = ?, donation = ?, invoice = ?, defrayal = ? WHERE id = ?";
         public static String updateAssociationMember = "UPDATE association_member SET id_member = ? WHERE id_association = ?";
-        public static String updateAssociationExterne = "UPDATE association_externe SET id_externe = ? WHERE id_association = ?";
         public static String updateAssociationTree = "UPDATE association_tree SET id_tree = ? WHERE id_association = ?";
     }

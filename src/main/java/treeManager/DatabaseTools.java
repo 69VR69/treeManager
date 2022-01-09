@@ -61,31 +61,7 @@ public class DatabaseTools
          */
         private String composeUrl()
             {
-                String url = "jdbc:mariadb://" + ip + ":3306/tree_manager";
-                
-                System.out.println("Connection string : " + url);
-                
-                return url;
-            }
-        
-        /**
-         * Recupère l'utilisateur
-         *
-         * @return retourne l'utilisateur
-         */
-        public String getUser()
-            {
-                return user;
-            }
-        
-        /**
-         * Récupère le mot de passe
-         *
-         * @return retourne ce mot passe
-         */
-        public String getPassword()
-            {
-                return password;
+                return "jdbc:mariadb://" + ip + ":3306/tree_manager";
             }
         
         //region Tree
@@ -746,17 +722,6 @@ public class DatabaseTools
                         ResultSet rs = ps.executeQuery();
                         rs.next();
                         
-                        //Externe
-                        PreparedStatement ps1 = connection.prepareStatement(SQLREQUEST.selectAssociationExterne);
-                        ps1.setInt(1, rs.getInt("id"));
-                        ResultSet rs1 = ps1.executeQuery();
-                        ArrayList<Externe> externeList = new ArrayList<>();
-                        while (rs1.next())
-                            {
-                                Externe tempExterne = new Externe(rs1.getInt("id"));
-                                externeList.add(tempExterne);
-                            }
-                        
                         //Member
                         PreparedStatement ps2 = connection.prepareStatement(SQLREQUEST.selectAssociationMember);
                         ps2.setInt(1, rs.getInt("id"));
@@ -777,7 +742,7 @@ public class DatabaseTools
                                 treeList.add(getTreeById(rs3.getInt("id")));
                             }
                         
-                        return new Association(rs.getInt("num_max_visite"), rs.getInt("refund_amount"), rs.getInt("contributed_amount"), rs.getInt("balance"), rs.getInt("contribution"), rs.getInt("donation"), rs.getInt("invoice"), rs.getInt("defrayal"), memberList, externeList, treeList);
+                        return new Association(rs.getInt("num_max_visite"), rs.getInt("refund_amount"), rs.getInt("contributed_amount"), rs.getInt("balance"), rs.getInt("contribution"), rs.getInt("donation"), rs.getInt("invoice"), rs.getInt("defrayal"), memberList, new ArrayList<>(), treeList);
                     }
                 catch (Exception e)
                     {
@@ -807,17 +772,17 @@ public class DatabaseTools
                         ps.setInt(7, a.getFacture());
                         ps.setInt(8, a.getDefreiment());
                         //Where
-                        ps.setInt(14, 0);
+                        ps.setInt(9, 0);
                         
                         ps.executeUpdate();
                         
                         addAllMember(a.getMembers());
-                        
-                        for (Externe e : a.getDonnateurs())
+    
+                        for (Member m : a.getMembers())
                             {
-                                ps = connection.prepareStatement(SQLREQUEST.updateAssociationExterne);
+                                ps = connection.prepareStatement(SQLREQUEST.updateAssociationMember);
                                 ps.setInt(1, 0);
-                                ps.setInt(2, e.getId());
+                                ps.setInt(2, m.getId());
                                 ps.executeUpdate();
                             }
                         

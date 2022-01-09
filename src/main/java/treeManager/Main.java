@@ -23,10 +23,9 @@ public class Main {
             System.out.print("> ");
             input = Entity.lireClavier();
         }
-        
-        System.out.println("DEBUG - input = " + input);
 
         boolean exit = (input == "-1" ? true : false);
+        System.out.println("exit = " + exit);
         while (!exit) {
             switch (input) {    
                 case "-1":
@@ -54,17 +53,19 @@ public class Main {
                     break;
             }
 
-            System.out.println("0 : Gerer les membres");
-            System.out.println("1 : Gerer les visites");
-            System.out.println("2 : Gerer les arbres");
-            System.out.println("3 : Reset cotisation (nouvel exercice fiscal)");
-            System.out.println("-1 : Quitter");
-            System.out.print("> ");
-            input = Entity.lireClavier();
-            while (!isValidInt(input, -1, 2)) {
-                System.out.println("ERROR - Veuillez entrer une valeur correcte : ");
+            if (!exit) {
+                System.out.println("0 : Gerer les membres");
+                System.out.println("1 : Gerer les visites");
+                System.out.println("2 : Gerer les arbres");
+                System.out.println("3 : Reset cotisation (nouvel exercice fiscal)");
+                System.out.println("-1 : Quitter");
                 System.out.print("> ");
                 input = Entity.lireClavier();
+                while (!isValidInt(input, -1, 2)) {
+                    System.out.println("ERROR - Veuillez entrer une valeur correcte : ");
+                    System.out.print("> ");
+                    input = Entity.lireClavier();
+                }
             }
         }
 
@@ -81,50 +82,54 @@ public class Main {
         System.out.println("2 : Payer la cotisation d'un membre");
         System.out.println("-1 : Retour au menu principal");
 
+        System.out.print("> ");
         String input = Entity.lireClavier();
         while (!isValidInt(input, -1, 2)) {
             // Checks input (int included in [-1, 2])
             System.out.println("ERROR - Veuillez entrer une valeur correcte : ");
+            System.out.print("> ");
             input = Entity.lireClavier();
         }
 
-        System.out.println("DEBUG - input = " + input);
-
-        while (input != "0") {
-            switch (input) {
-                case "0":
-                    System.out.println("---");
+        boolean exitMembres = (input == "-1" ? true : false);
+        while (!exitMembres) {
+            switch (input) {    
+                case "-1":
+                    exitMembres = true;
                     break;
     
-                case "1":
+                case "0":
                     System.out.print("Nom du nouveau membre : ");
                     asso.add_member(new Member(Entity.lireClavier()));
                     System.out.println();
                     break;
     
-                case "2":
+                case "1":
                     System.out.print("Nom du membre à supprimer : ");
                     asso.desinscrire(new Member(Entity.lireClavier()));
                     System.out.println();
                     break;
     
-                case "3":
+                case "2":
                     System.out.print("Nom du membre qui a payé sa cotisation : ");
                     asso.pay_cotisation(new Member(Entity.lireClavier()));;
                     System.out.println();
                     break;
             } 
             
-            System.out.println();
-            System.out.println("0 : Nouveau membre");
-            System.out.println("1 : Supprimer un membre");
-            System.out.println("2 : Payer la cotisation d'un membre");
-            System.out.println("-1 : Retour au menu principal");
+            if (!exitMembres) {
+                System.out.println();
+                System.out.println("0 : Nouveau membre");
+                System.out.println("1 : Supprimer un membre");
+                System.out.println("2 : Payer la cotisation d'un membre");
+                System.out.println("-1 : Retour au menu principal");
 
-            input = Entity.lireClavier();
-            while (!isValidInt(input, -1, 2)) {
-                System.out.println("ERROR - Veuillez entrer une valeur correcte : ");
+                System.out.print("> ");
                 input = Entity.lireClavier();
+                while (!isValidInt(input, -1, 2)) {
+                    System.out.println("ERROR - Veuillez entrer une valeur correcte : ");
+                    input = Entity.lireClavier();
+                }
             }
         }
     }
@@ -142,13 +147,16 @@ public class Main {
         while (!isValidInt(input, -1, 1)) {
             // Checks input (int included in [-1, 1])
             System.out.println("ERROR - Veuillez entrer une valeur correcte : ");
+            System.out.print("> ");
             input = Entity.lireClavier();
         }
 
-        while (input != "-1") {
+        boolean exitVisites = (input == "-1") ? true : false;
+
+        while (!exitVisites) {
             switch (input) {
                 case "-1":
-                    System.out.println("---");
+                    exitVisites = true;
                     break;
     
                 case "0":
@@ -174,16 +182,18 @@ public class Main {
                     break;
             } 
             
-            System.out.println();
-            System.out.println("0 : Nouveau membre");
-            System.out.println("1 : Supprimer un membre");
-            System.out.println("2 : Payer la cotisation d'un membre");
-            System.out.println("-1 : Retour au menu principal");
-
-            input = Entity.lireClavier();
-            while (!isValidInt(input, -1, 2)) {
-                System.out.println("ERROR - Veuillez entrer une valeur correcte : ");
+            if (!exitVisites) {
+                System.out.println();
+                System.out.println("0 : Nouveau membre");
+                System.out.println("1 : Supprimer un membre");
+                System.out.println("2 : Payer la cotisation d'un membre");
+                System.out.println("-1 : Retour au menu principal");
+    
                 input = Entity.lireClavier();
+                while (!isValidInt(input, -1, 2)) {
+                    System.out.println("ERROR - Veuillez entrer une valeur correcte : ");
+                    input = Entity.lireClavier();
+                }
             }
         }
     }
@@ -192,7 +202,130 @@ public class Main {
      * Command line interaction for anything tree related
      */
     public static void gestionArbres() {
-        
+        System.out.println("ARBRES");
+        System.out.println("0 : Nouvel arbre");
+        System.out.println("1 : Nominer arbre(s)");
+        System.out.println("-1 : Retour au menu principal");
+
+        String input = Entity.lireClavier();
+        while (!isValidInt(input, -1, 1)) {
+            // Checks input (int included in [-1, 1])
+            System.out.println("ERROR - Veuillez entrer une valeur correcte : ");
+            System.out.print("> ");
+            input = Entity.lireClavier();
+        }
+
+        boolean exitArbres = (input == "-1") ? true : false;
+
+        while (!exitArbres) {
+            switch (input) {
+                case "-1":
+                    exitArbres = true;
+                    break;
+    
+                case "0":
+                    System.out.print("Nom de l'arbre : ");
+                    String nom = Entity.lireClavier();
+                    
+                    System.out.println();
+                    System.out.print("Age : ");
+                    String age = Entity.lireClavier();
+
+                    System.out.println();
+                    System.out.print("Hauteur : ");
+                    String tmp = Entity.lireClavier();
+                    while(!isValidInt(tmp)) {
+                        System.out.println("ERROR - Hauteur invalide :");
+                        tmp = Entity.lireClavier();
+                    }
+                    int hauteur = Integer.parseInt(Entity.lireClavier());
+
+                    System.out.println();
+                    System.out.print("Epaisseur : ");
+                    tmp = Entity.lireClavier();
+                    while(!isValidInt(tmp)) {
+                        System.out.println("ERROR - Epaisseur invalide :");
+                        tmp = Entity.lireClavier();
+                    }
+                    int epaisseur = Integer.parseInt(Entity.lireClavier());
+
+                    System.out.println();
+                    System.out.print("Espece : ");
+                    String espece = Entity.lireClavier();
+
+                    System.out.println();
+                    System.out.print("Genre : ");
+                    String genre = Entity.lireClavier();
+
+                    System.out.println();
+                    System.out.print("Remarquable ? (y/n) : ");
+                    boolean remarquable = (Entity.lireClavier().toLowerCase() == "y" ? true : false);
+
+                    System.out.println();
+                    System.out.print("Emplacement : ");
+                    String emplacement = Entity.lireClavier();
+
+                    System.out.println();
+                    System.out.print("Domaine : ");
+                    String domaine = Entity.lireClavier();
+
+                    System.out.println();
+                    System.out.print("Arrondissement : ");
+                    String arrondissement = Entity.lireClavier();
+
+                    System.out.println();
+                    System.out.print("Adresse : ");
+                    String adresse = Entity.lireClavier();
+
+                    System.out.println();
+                    System.out.print("Complement : ");
+                    String complement = Entity.lireClavier();
+
+                    Tree t = new Tree(0, nom, age, hauteur, epaisseur, espece, genre, remarquable, emplacement, 0, domaine, arrondissement, adresse, complement);
+                    asso.add_tree(t);
+                    System.out.println();
+                    break;
+    
+                case "1":
+                    System.out.print("Nom du membre à supprimer : ");
+                    asso.desinscrire(new Member(Entity.lireClavier()));
+                    System.out.println();
+                    break;
+    
+                case "2":
+                    System.out.print("Nom du membre qui a payé sa cotisation : ");
+                    asso.pay_cotisation(new Member(Entity.lireClavier()));
+                    System.out.println();
+                    break;
+    
+                default:
+                    System.out.println("ERROR in switch menu");
+                    break;
+            } 
+            
+            if (!exitArbres) {
+                System.out.println();
+                System.out.println("0 : Nouveau membre");
+                System.out.println("1 : Supprimer un membre");
+                System.out.println("2 : Payer la cotisation d'un membre");
+                System.out.println("-1 : Retour au menu principal");
+    
+                input = Entity.lireClavier();
+                while (!isValidInt(input, -1, 2)) {
+                    System.out.println("ERROR - Veuillez entrer une valeur correcte : ");
+                    input = Entity.lireClavier();
+                }
+            }
+        }
+    }
+
+    /**
+     * Checks if given string is an integer
+     * @param input
+     * @return
+     */
+    public static boolean isValidInt(String input) {
+        return (Entity.isInteger(input));
     }
 
     /**
@@ -203,6 +336,6 @@ public class Main {
      * @return
      */
     public static boolean isValidInt(String input, int min, int max) {
-        return (Entity.isInteger(input) && Integer.parseInt(input) <= 2 && Integer.parseInt(input) >= -1);
+        return (Entity.isInteger(input) && Integer.parseInt(input) <= max && Integer.parseInt(input) >= min);
     }
 }

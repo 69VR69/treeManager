@@ -1,6 +1,7 @@
 package treeManager.Data;
 
 import treeManager.Entity.Externe;
+import treeManager.Entity.Maire;
 import treeManager.Entity.Member;
 
 import java.util.ArrayList;
@@ -103,33 +104,49 @@ public class Association {
     //endregion
 
     //envoie au donateur une demende de don elle contient le dernier rapport
-    public void ask_money() {
+    public void ask_money(Externe e,String money_report) {
         //TODO send report to one donator
+        e.ask_donnation(money_report);
     }
 
-    public void ask_money_all() {
-        //TODO send report to all donator
+    //demende a tout les donnateure de faire un don
+    public void ask_money_all(String money_report) {
+        for (int i =0; i<donnateurs.size();i++){
+            ask_money(donnateurs.get(i),money_report);
+        }
     }
 
 
-    public Tree mayor_tree_select(ArrayList<Tree> t_list) {
-        //TODO moove into mairie
-        return null;
-    }
+
 
     //fait le bilan de fin d'annee
     public void end_year() {
+        //search the mayor
+        Maire mairie = null;
+        for (int i=0; i<donnateurs.size();i++){
+            if (donnateurs.get(i).getClass()== Maire.class){
+                mairie = (Maire) donnateurs.get(i);
+                break;
+            }
+        }
+
+        if (mairie==null){
+            //TODO warn user error during execution end year report was not done because their is no mayor to validate a tree
+            return;
+        }
+
+
         ban();
         reset_money();
         reset_member_payment();
         ArrayList<Tree> trees5 = top5tree();
-        Tree the_choosen_one = mayor_tree_select(trees5);
+        Tree the_choosen_one = mairie.mayor_tree_select(trees5);
         make_tree_remarkable(the_choosen_one);
         String report = generateRapport();
-        ask_money_all();
+        ask_money_all(report);
     }
 
-    //generateRapport() rapport financier
+    //construit le rapport financier
     public String generateRapport() {
         String report = "--- RAPPORT ---\n" + "--- Dépenses --- \n " + "Total Factures : " + this.facture + "\n" + " Total Visites : " + this.defreiment + "\n" + "--- Revenus ---\n" + "Total Factures : " + this.facture + "\n" + " Total Visites : " + this.defreiment + "\n" + "--- Solde ---\n" + "Solde : " + this.solde + "\n";
 
@@ -140,14 +157,19 @@ public class Association {
 
     //region members manage
 
-    //exclusion des membres qui ont pas payer
+    //reset le payment des membres
     private void reset_member_payment() {
-        //TODO reset memeber payment
+
+        for(int i = 0; i<members.size();i++){
+            //TODO define function
+            members.get(i).unpayCotisation();
+        }
+
     }
 
 
-    public void pay_cotisation() {
-        //TODO add member and make it pay
+    public void pay_cotisation(Member m) {
+        m.payCotisation();
         add_cotise();
     }
 
@@ -181,12 +203,13 @@ public class Association {
 
     //region trees manage
     private void make_tree_remarkable(Tree the_chosen_one) {
-        //TODO make one remarkable
+        the_chosen_one.setRemarquable(true);
     }
 
     //selection 5 arbres dans ceux proposé par les membres
     private ArrayList<Tree> top5tree() {
         //TODO do sql request
+        String request = "select top(5) from tree where remarquable = 'false' order by num_votes,thickness,height";
         return null;
     }
     //endregion

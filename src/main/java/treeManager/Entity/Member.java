@@ -98,10 +98,39 @@ public class Member implements Entity {
         return nbVisites;
     }
 
+    /**
+     * Get visits done by the member
+     * @return An array of Visite
+     */
     public ArrayList<Visite> get_visites() {
         return visites;
     }
 
+    /**
+     * Finds a visit done by the member with the given ID
+     * @param id
+     * @return Visit with the given ID, or null if no visits had this ID
+     */
+    public Visite getVisiteById(int id) {
+        for (Visite v : this.get_visites()) {
+            if (v.getId() == id) return v;
+        }
+        return null;
+    }
+
+    /**
+     * Print all visits done by the member
+     */
+    public void printVisites() {
+        for (Visite v : this.get_visites()) {
+            System.out.println(v.getId() + " - " + v.getDate().toString() + " - Tree ID " + v.getTree().getId());
+        }
+    }
+
+    /**
+     * Add a visit
+     * @param v
+     */
     public void add_visite(Visite v) {
         visites.add(v);
     }

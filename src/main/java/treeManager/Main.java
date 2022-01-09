@@ -198,7 +198,7 @@ public class Main {
 
                     System.out.print("ID du memmbre qui fera la visite : ");
                     String tmp_id_member_2 = Entity.lireClavier();
-                    while (!isValidInt(tmp_id_member_2)) {
+                    while (!isValidInt(tmp_id_member_2) || asso.get_member_size()>Integer.parseInt(tmp_id_member_2)) {
                         System.out.println("ERROR - Veuillez entrer une valeur correcte : ");
                         tmp_id_member = Entity.lireClavier();
                     }

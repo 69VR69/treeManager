@@ -555,6 +555,16 @@ public class Association {
         }
     }
 
+    public int get_member_size(){
+        return members.size();
+    }
+    public int get_trees_size(){
+        return trees.size();
+    }
+    public int get_donnateur_size(){
+        return donnateurs.size();
+    }
+
     public Member get_member_by_id(int i){
         if (i> members.size()|| i<0){
             return null;
@@ -564,13 +574,30 @@ public class Association {
         }
     }
 
+    public Externe get_donnateur_by_id(int i){
+        if (i> donnateurs.size()|| i<0){
+            return null;
+        }
+        else {
+            return donnateurs.get(i);
+        }
+    }
+
     public void print_trees(){
         for (int i=0;i<trees.size();i++){
             System.out.println("ID : " + i + " ; "+ trees.get(i).toString());
         }
     }
-    public void print_members(){}
-    public void print_donnateurs(){}
+    public void print_members(){
+        for (int i=0;i<members.size();i++){
+            System.out.println("ID : " + i + " ; "+ members.get(i).toString());
+        }
+    }
+    public void print_donnateurs(){
+        for (int i=0;i<donnateurs.size();i++){
+            System.out.println("ID : " + i + " ; "+ donnateurs.get(i).toString());
+        }
+    }
     //endregion
 
 }

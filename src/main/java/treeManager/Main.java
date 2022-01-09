@@ -7,11 +7,13 @@ public class Main {
     static public Association asso;
     public static void main(String[] args) {
         asso = new Association();
+        // TODO peupler l'asso avec le pouvoir de la DB (AFO, c'est à toi-)
 
         System.out.println("ACCUEIL");
         System.out.println("0 : Gerer les membres");
         System.out.println("1 : Gerer les visites");
         System.out.println("2 : Gerer les arbres");
+        System.out.println("3 : Nouvel exercice fiscal");
         System.out.println("-1 : Quitter");
 
         System.out.print("> ");
@@ -24,8 +26,13 @@ public class Main {
         
         System.out.println("DEBUG - input = " + input);
 
-        while (input != "-1") {
+        boolean exit = (input == "-1" ? true : false);
+        while (!exit) {
             switch (input) {    
+                case "-1":
+                    exit = true;
+                    break;
+
                 case "0":
                     gestionMembres();
                     break;
@@ -37,6 +44,10 @@ public class Main {
                 case "2":
                     gestionArbres();
                     break;
+
+                case "3":
+                    asso.end_year();
+                    break;
     
                 default:
                     System.out.println("ERROR in switch menu");
@@ -46,6 +57,7 @@ public class Main {
             System.out.println("0 : Gerer les membres");
             System.out.println("1 : Gerer les visites");
             System.out.println("2 : Gerer les arbres");
+            System.out.println("3 : Reset cotisation (nouvel exercice fiscal)");
             System.out.println("-1 : Quitter");
             System.out.print("> ");
             input = Entity.lireClavier();

@@ -5,6 +5,10 @@ import treeManager.Data.Tree;
 import java.util.ArrayList;
 
 public class Maire extends Externe {
+    /**
+     * Maire
+     * @param id ID
+     */
     public Maire(int id) {
         super(id);
     }
@@ -12,7 +16,7 @@ public class Maire extends Externe {
     /**
      * Return a Tree being nominated among the proposed ones
      *
-     * @param trees
+     * @param trees ArrayList of trees
      * @return Nominated tree, or null if none
      */
     public Tree nominate(ArrayList<Tree> trees) {

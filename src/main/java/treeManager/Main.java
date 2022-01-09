@@ -133,7 +133,6 @@ public class Main {
                     String memberID = Entity.lireClavier();
                     while (!isValidInt(memberID)) {
                         System.out.println("ERROR - Veuillez entrer une valeur correcte : ");
-                        System.out.print("> ");
                         memberID = Entity.lireClavier();
                     }
 
@@ -170,6 +169,7 @@ public class Main {
                 input = Entity.lireClavier();
                 while (!isValidInt(input, -1, 2)) {
                     System.out.println("ERROR - Veuillez entrer une valeur correcte : ");
+                    System.out.print("> ");
                     input = Entity.lireClavier();
                 }
             }
@@ -189,7 +189,6 @@ public class Main {
         String input = Entity.lireClavier();
         while (!isValidInt(input, -1, 1)) {
             System.out.println("ERROR - Veuillez entrer une valeur correcte : ");
-            System.out.print("> ");
             input = Entity.lireClavier();
         }
 
@@ -264,9 +263,11 @@ public class Main {
                 System.out.println("1 : Finir une visite");
                 System.out.println("-1 : Retour au menu principal");
     
+                System.out.print("> ");
                 input = Entity.lireClavier();
                 while (!isValidInt(input, -1, 1)) {
                     System.out.println("ERROR - Veuillez entrer une valeur correcte : ");
+                    System.out.print("> ");
                     input = Entity.lireClavier();
                 }
             }
@@ -283,6 +284,7 @@ public class Main {
         System.out.println("1 : Voter pour un arbre");
         System.out.println("2 : Nominer un arbre");
         System.out.println("-1 : Retour au menu principal");
+        System.out.print("> ");
 
         String input = Entity.lireClavier();
         while (!isValidInt(input, -1, 2)) {
@@ -416,10 +418,12 @@ public class Main {
                 System.out.println("1 : Voter pour un arbre");
                 System.out.println("2 : Nominer un arbre");
                 System.out.println("-1 : Retour au menu principal");
+                System.out.print("> ");
     
                 input = Entity.lireClavier();
                 while (!isValidInt(input, -1, 2)) {
                     System.out.println("ERROR - Veuillez entrer une valeur correcte : ");
+                    System.out.print("> ");
                     input = Entity.lireClavier();
                 }
             }
@@ -437,7 +441,7 @@ public class Main {
         System.out.println("1 : Ajouter un nouveau donateur");
         System.out.println("2 : Recevoir une donation");
         System.out.println("-1 : Retour au menu principal");
-
+        System.out.print("> ");
         String input = Entity.lireClavier();
         while (!isValidInt(input, -1, 2)) {
             // Checks input (int included in [-1, 1])
@@ -490,10 +494,11 @@ public class Main {
                 System.out.println("1 : Ajouter un nouveau donateur");
                 System.out.println("2 : Recevoir une donation");
                 System.out.println("-1 : Retour au menu principal");
-    
+                System.out.print("> ");
                 input = Entity.lireClavier();
                 while (!isValidInt(input, -1, 2)) {
                     System.out.println("ERROR - Veuillez entrer une valeur correcte : ");
+                    System.out.print("> ");
                     input = Entity.lireClavier();
                 }
             }
@@ -508,7 +513,6 @@ public class Main {
         String facture = Entity.lireClavier();
         while (!isValidInt(facture)) {
             System.out.println("ERROR - Montant invalide :");
-            System.out.print(">");
             facture = Entity.lireClavier();
         }
         asso.do_facture(Integer.parseInt(facture));

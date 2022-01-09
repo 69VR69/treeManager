@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 public interface Entity {   
     /**
      * Utility - Reads keyboard input
-     *
+     * 
      * @return Entered text
      */
     static public String lireClavier() {
@@ -21,8 +21,8 @@ public interface Entity {
 
     /**
      * Utility - Check if given String is a correct Int
-     *
-     * @param str
+     * 
+     * @param str String to parse as an Integer
      * @return True if correct, or False
      */
     static public boolean isInteger(String str) {
@@ -33,5 +33,4 @@ public interface Entity {
             return false;
         }
     }
-    // TODO implements on member + externe
 }

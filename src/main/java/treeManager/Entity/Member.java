@@ -39,6 +39,7 @@ public class Member implements Entity {
 
     /**
      * Get the id of the member
+     * @return id ID
      */
     public int getId() {
         return id;
@@ -46,15 +47,15 @@ public class Member implements Entity {
 
     /**
      * Sets the id of the member
-     * 
-     * @param id
+     * @param id ID
      */
     public void setId(int id) {
         this.id = id;
     }
 
     /**
-     * Get the name of the member
+     * Return the name of the member
+     * @return Name
      */
     public String getNom() {
         return nom;
@@ -62,15 +63,15 @@ public class Member implements Entity {
 
     /**
      * Sets the name of the member
-     *
-     * @param nom
+     * @param nom Name
      */
     public void setNom(String nom) {
         this.nom = nom;
     }
 
     /**
-     * Return if the member has payed its cotisation
+     * Return true if the member has payed its cotisation
+     * @return Boolean
      */
     public boolean hasPayed() {
         return hasPayed;
@@ -85,8 +86,7 @@ public class Member implements Entity {
 
     /**
      * Set the trees proposed for nomination by the member
-     *
-     * @param proposedTrees
+     * @param proposedTrees ArrayList of trees
      */
     public void setProposedTrees(ArrayList<Tree> proposedTrees) {
         this.proposedTrees = proposedTrees;
@@ -94,6 +94,7 @@ public class Member implements Entity {
 
     /**
      * Get the number of visits done by the member
+     * @return Number of visits
      */
     public int getNbVisites() {
         return nbVisites;
@@ -109,7 +110,7 @@ public class Member implements Entity {
 
     /**
      * Finds a visit done by the member with the given ID
-     * @param id
+     * @param id Searched ID
      * @return Visit with the given ID, or null if no visits had this ID
      */
     public Visite getVisiteById(int id) {
@@ -130,7 +131,7 @@ public class Member implements Entity {
 
     /**
      * Add a visit
-     * @param v
+     * @param v Visite being added
      */
     public void add_visite(Visite v) {
         visites.add(v);
@@ -143,6 +144,10 @@ public class Member implements Entity {
         this.nbVisites++;
     }
 
+    /**
+     * Sets the number of visits
+     * @param i Number of visits
+     */
     public void setVisites(int i){
         this.nbVisites=i;
     }
@@ -175,60 +180,37 @@ public class Member implements Entity {
 
     /**
      * Add a Tree to member's proposed trees list
+     * @param t Proposed tree for nomination
      */
     public void proposeTree(Tree t) {
-        /*
-         * TODO
-         * Si on atteint les 5, proposer d'en remplacer un par le 6ème choisi (ou pas)
-         */
         if (proposedTrees.size() > 5) {
-            System.out.println("You already proposed " + proposedTrees.size()
-                    + "trees. Please select one to delete: (NOT IMPLEMENTED YET)");
+            System.out.println("You already proposed " + proposedTrees.size() + "trees.");
         } else {
             proposedTrees.add(t);
         }
     }
 
+    /**
+     * Delete a member from the DB
+     * @param dbt DatabaseTools
+     */
     public void deleteMember(DatabaseTools dbt) {
         // TODO delete the memeber information from the BD (to be RGPD compliant)
         dbt.removeMember(this);
     }
 
-     /*
-        // DEPRECATED (mais mis de côté au cas où : du code pour choisir l'arbre à entrer)
-        public void proposeTree() {
-            //proposer 5 arbre to association
-            boolean stop = false;            
-            System.out.println("You currently have proposed " + proposedTrees.size() + "trees.");
-
-             //   Gros problème -> comment proposer/lister les arbres possibles ??? Par nom ?
-             //   Ou alors faut implémenter une recherche dans la BD pour avoir les arbres voulus... et ça sera chiant
-            System.out.println("<Print possible trees here>"); 
-            String input = Entity.lireClavier();
-            String t = input; // WARN t is temporary - should be a Tree
-
-            while(!stop) {
-                if (t == "-1") { 
-                    stop = true;
-                } else if (proposedTrees.size() > 5) {
-                    System.out.println("Trop d'arbres!");
-                    stop = true;
-                } else {
-                    //TMP
-                    Tree tmpTree = new Tree(5, "nom", "15", 15, 15, "espece", "genre", false, "emplacement", 0, "domaine", "arrondissement", "adresse", "complement", new ArrayList<Visite>());
-                    proposedTrees.add(tmpTree);
-                    System.out.println("Enter a tree to propose: "); // WARN clarifier le choix de l'Arbre à ajouter (recherche par attribut ? tout lister et choix par id ?)
-                    t = Entity.lireClavier();
-                }
-            }
-        }
-        */
+    /**
+     * Return a member as a human readable String
+     * @return Readable String
+     */
+    public String toString() {
+        return(this.nom + (this.hasPayed ? " - A payé sa cotisation" : " - N'a pas payé sa cotisation"));
+    }
 
     // --- Constructeurs ---
     /**
      * Simple member constructor
-     * 
-     * @param nom
+     * @param nom Name
      */
     public Member(String nom) {
         this.id = 0;
@@ -241,12 +223,12 @@ public class Member implements Entity {
     /**
      * Member constructor
      *
-     * @param id
-     * @param nom
-     * @param hasPayed
-     * @param proposedTrees
-     * @param visites
-     * @param nbVisites
+     * @param id ID
+     * @param nom Name
+     * @param hasPayed Boolean
+     * @param proposedTrees ArrayList of trees
+     * @param visites ArrayList of visits
+     * @param nbVisites Number of visits
      */
     public Member(int id, String nom, boolean hasPayed, ArrayList<Tree> proposedTrees, ArrayList<Visite> visites, int nbVisites)
         {
